@@ -1,9 +1,8 @@
-import BlogPage from "@/src/pages/blog/Blog";
+import { getAllPosts } from '@/src/entities/post/api/post'
+import BlogPage from '@/src/pages/blog/Blog'
 
-const Page = () => {
-    return (
-        <BlogPage />
-    )
+export default async function Page() {
+  const posts = await getAllPosts()
+
+  return <BlogPage posts={posts} />
 }
-
-export default Page;
