@@ -15,12 +15,12 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white bg-backgroundColor bg-opacity-90 transition-opacity duration-300">
+    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-backgroundColor bg-opacity-90 transition-opacity duration-300">
       <div className="container flex h-16 items-center justify-between space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex items-center space-x-4">
           <Link href="/" className="ml-5 flex items-center space-x-2">
-            <CircleIcon className="h-6 w-6 text-white" />
-            <div className="ml-1 text-white">
+            <CircleIcon className="h-6 w-6 text-gray-400" />
+            <div className="ml-1 text-gray-400">
               <p>Jongsu Jin</p>
             </div>
           </Link>
@@ -32,8 +32,8 @@ export function Header() {
               key={header.id}
               className={`text-sm font-medium transition-colors hover:text-hoverColor ${
                 pathname === header.href
-                  ? 'border-b-2 border-white text-white'
-                  : 'text-textColor'
+                  ? 'border-b-2 border-white text-textColor'
+                  : 'text-gray-400'
               }`}
             >
               {header.title}
