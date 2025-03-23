@@ -1,18 +1,18 @@
-'use client';
+'use client'
 
-import { Post } from '@/src/entities/post/model/types';
-import { format, parseISO } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import { MDXRemote } from 'next-mdx-remote';
-import { Card, CardContent } from '@/src/shared/ui/Card';
+import { Post } from '@/src/entities/post/model/types'
+import { format, parseISO } from 'date-fns'
+import { ko } from 'date-fns/locale'
+import { MDXRemote } from 'next-mdx-remote'
+import { Card, CardContent } from '@/src/shared/ui/Card'
 
 // 커스텀 MDX 컴포넌트 (선택사항)
 const components = {
   // 커스텀 컴포넌트 정의
-};
+}
 
 interface PostDetailProps {
-  post: Post;
+  post: Post
 }
 
 export function PostDetail({ post }: PostDetailProps) {
@@ -21,7 +21,9 @@ export function PostDetail({ post }: PostDetailProps) {
       <Card>
         <CardContent className="prose prose-invert max-w-none">
           <div className="mb-8">
-            <h1 className="mb-2 text-3xl font-bold text-gray-100">{post.title}</h1>
+            <h1 className="mb-2 text-3xl font-bold text-gray-100">
+              {post.title}
+            </h1>
             <p className="text-sm text-gray-500">
               {format(parseISO(post.date), 'yyyy년 MM월 dd일', { locale: ko })}
             </p>
@@ -45,5 +47,5 @@ export function PostDetail({ post }: PostDetailProps) {
         </CardContent>
       </Card>
     </div>
-  );
+  )
 }
