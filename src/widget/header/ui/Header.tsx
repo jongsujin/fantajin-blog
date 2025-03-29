@@ -15,13 +15,13 @@ export function Header() {
   }
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-800 bg-backgroundColor bg-opacity-90 transition-opacity duration-300">
+    <header className="bg-backgroundColor bg-opacity-90 sticky top-0 z-50 w-full border-b border-gray-800 transition-opacity duration-300">
       <div className="container flex h-16 items-center justify-between space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex items-center space-x-4">
           <Link href="/" className="ml-5 flex items-center space-x-2">
             <CircleIcon className="h-6 w-6 text-gray-400" />
             <div className="ml-1 text-gray-400">
-              <p>Jongsu Jin</p>
+              <p>Fanta Jin</p>
             </div>
           </Link>
         </div>
@@ -30,9 +30,9 @@ export function Header() {
             <Link
               href={header.href}
               key={header.id}
-              className={`text-sm font-medium transition-colors hover:text-hoverColor ${
+              className={`hover:text-hoverColor text-sm font-medium transition-colors ${
                 pathname === header.href
-                  ? 'border-b-2 border-white text-textColor'
+                  ? 'text-textColor border-b-2 border-white'
                   : 'text-gray-400'
               }`}
             >
@@ -44,13 +44,13 @@ export function Header() {
         <div className="flex items-center space-x-4">
           <button
             onClick={() => {}}
-            className="rounded-lg p-2 hover:bg-hoverColor"
+            className="hover:bg-hoverColor rounded-lg p-2"
             aria-label="Toggle theme"
           >
             {theme === 'light' ? (
-              <Moon className="h-5 w-5 text-textColor" onClick={toggleTheme} />
+              <Moon className="text-textColor h-5 w-5" onClick={toggleTheme} />
             ) : (
-              <Sun className="h-5 w-5 text-textColor" onClick={toggleTheme} />
+              <Sun className="text-textColor h-5 w-5" onClick={toggleTheme} />
             )}
           </button>
         </div>
