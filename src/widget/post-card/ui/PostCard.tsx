@@ -1,4 +1,5 @@
 import Link from 'next/link'
+// import Image from 'next/image'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Post } from '@/src/entities/post/model/types'
@@ -13,31 +14,43 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Card className="h-full transition-all duration-300 hover:scale-102 hover:shadow-xl shadow-lg border border-gray-800/60 hover:border-hoverColor/30 group bg-cardColor/90">
+      <Card className="hover:border-hoverColor/30 group bg-cardColor/90 h-full border border-gray-800/60 shadow-lg transition-all duration-300 hover:scale-102 hover:shadow-xl">
+        {/* {post.thumbnail && (
+          <div className="relative h-48 w-full overflow-hidden">
+            <Image
+              src={post.thumbnail}
+              alt={post.title}
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
+              priority
+            />
+          </div>
+        )} */}
         <CardContent>
-          <div className="flex items-center gap-2 mb-3 text-gray-500">
+          <div className="aspect-video w-full overflow-hidden bg-gray-700/50" />
+          <div className="my-3 flex items-center gap-2 text-gray-500">
             <Calendar size={14} />
             <span className="text-xs">
               {format(parseISO(post.date), 'yyyy년 MM월 dd일', { locale: ko })}
             </span>
           </div>
-          
-          <h2 className="mb-3 text-xl font-bold text-gray-100 group-hover:text-hoverColor transition-colors">
+
+          <h2 className="group-hover:text-hoverColor mb-3 text-xl font-bold text-gray-100 transition-colors">
             {post.title}
           </h2>
-          
-          <p className="mb-4 text-gray-400 line-clamp-2 text-sm">
+
+          <p className="mb-4 line-clamp-2 text-sm text-gray-400">
             {post.description}
           </p>
-          
-          <div className="flex flex-wrap gap-2 mb-4">
+
+          <div className="mb-4 flex flex-wrap gap-2">
             {post.tags.map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
           </div>
-          
-          <div className="flex items-center text-hoverColor text-sm group-hover:translate-x-1 transition-transform duration-300 mt-auto">
-            <span className="font-medium mr-1">읽기</span>
+
+          <div className="text-hoverColor mt-auto flex items-center text-sm transition-transform duration-300 group-hover:translate-x-1">
+            <span className="mr-1 font-medium">읽기</span>
             <ArrowRight size={14} />
           </div>
         </CardContent>
