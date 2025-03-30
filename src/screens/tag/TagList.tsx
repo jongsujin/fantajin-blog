@@ -9,7 +9,7 @@ interface TagListProps {
 
 export default function TagList({ posts }: TagListProps) {
   // 모든 포스트에서 태그 추출
-  const allTags = posts.flatMap((post) => post.tags)
+  const allTags = posts?.flatMap((post) => post.tags) || []
 
   // 중복 제거 및 태그별 게시글 수 계산
   const tagCounts = allTags.reduce(

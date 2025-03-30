@@ -1,5 +1,5 @@
 import { getPostBySlug } from '@/src/entities/post/api/post'
-import { PostDetail } from '@/src/pages/blog/post-detail/PostDetail'
+import PostDetail from '@/src/screens/blog/post-detail/PostDetail'
 import { notFound } from 'next/navigation'
 
 export interface PostPageProps {

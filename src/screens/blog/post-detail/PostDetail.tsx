@@ -17,7 +17,7 @@ interface PostDetailProps {
   post: Post
 }
 
-export function PostDetail({ post }: PostDetailProps) {
+export default function PostDetail({ post }: PostDetailProps) {
   return (
     <div className="container mx-auto px-4 py-8">
       <Card>

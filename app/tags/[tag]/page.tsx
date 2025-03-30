@@ -1,5 +1,5 @@
 import { getAllPosts } from '@/src/entities/post/api/post'
-import TagItem from '@/src/pages/tag/TagItem'
+import TagItem from '@/src/screens/tag/TagItem'
 import { notFound } from 'next/navigation'
 
 interface TagPostsPageProps {
