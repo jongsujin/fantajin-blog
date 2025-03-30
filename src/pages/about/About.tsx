@@ -137,12 +137,12 @@ export default function AboutPage() {
                   프론트엔드 개발자
                 </h3>
                 <p className="mb-3 text-gray-500">BIOMATZ | 2024.07 - 현재</p>
-                <p className="text-gray-400">
+                <ul className="list-disc pl-5 text-gray-400">
                   <li>React와 TypeScript를 활용한 웹 애플리케이션 개발</li>
                   <li>마이크로프론트엔드 아키텍처 설계 및 구현</li>
                   <li>주니어 개발자 멘토링 및 코드 리뷰</li>
                   <li>성능 최적화 및 접근성 개선</li>
-                </p>
+                </ul>
               </div>
             </div>
           </div>
