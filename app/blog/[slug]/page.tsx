@@ -3,13 +3,12 @@ import { PostDetail } from '@/src/pages/blog/post-detail/PostDetail'
 import { notFound } from 'next/navigation'
 
 export interface PostPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
 export default async function PostPage({ params }: PostPageProps) {
-  // params를 await 합니다
   const resolvedParams = await params
 
   if (!resolvedParams || !resolvedParams.slug) {
