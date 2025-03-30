@@ -19,16 +19,14 @@ export default function AboutPage() {
           {/* 프로필 이미지와 소개 */}
           <div className="mt-8 flex flex-col items-center gap-8 md:flex-row md:items-start">
             {/* 프로필 이미지 */}
-            <div className="border-hoverColor/30 h-48 w-48 overflow-hidden rounded-full border-4 shadow-lg">
-              <div className="h-full w-full bg-gray-400"></div>
-              {/* 실제 이미지로 교체 시:
-              <Image 
-                src="/images/profile.jpg" 
-                alt="프로필 이미지" 
-                width={192} 
+            <div className="h-48 w-48 overflow-hidden rounded-full border-4 shadow-lg">
+              <Image
+                src="/assets/profile/Profile.jpg"
+                alt="프로필 이미지"
+                width={192}
                 height={192}
-                className="object-cover w-full h-full" 
-              /> */}
+                className="h-full w-full object-cover"
+              />
             </div>
 
             {/* 소개 텍스트 */}
