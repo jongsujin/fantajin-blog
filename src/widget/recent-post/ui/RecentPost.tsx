@@ -15,21 +15,22 @@ export default function RecentPost({ post }: RecentPostProps) {
       <Link href={`/blog/${post.slug}`}>
         <div className="group bg-cardColor hover:border-hoverColor/50 overflow-hidden rounded-xl border border-gray-800 shadow-xl transition-all duration-300 hover:shadow-2xl">
           <div className="p-6 md:p-8">
-            <div className="flex flex-col gap-8 md:flex-row">
-              {/* 왼쪽: 그래디언트 배경 */}
-              <div className="from-hoverColor/20 to-backgroundColor flex h-48 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br shadow-inner md:h-auto md:w-2/5">
+            <div className="flex flex-col gap-4 md:flex-row md:gap-6">
+              {/* 왼쪽: 썸네일 이미지 */}
+              <div className="from-hoverColor/20 to-backgroundColor flex h-48 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br shadow-inner md:h-auto md:w-2/5 lg:max-w-[320px] xl:max-w-[380px] 2xl:max-w-[420px]">
                 {post.thumbnail ? (
-                  <div className="relative h-full w-full">
+                  <div className="relative h-48 w-full md:h-[180px] lg:h-[200px] xl:h-[220px] 2xl:h-[240px]">
                     <Image
                       src={post.thumbnail}
                       alt={post.title}
                       fill
                       className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 40vw"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 320px, (max-width: 1600px) 380px, 420px"
+                      priority
                     />
                   </div>
                 ) : (
-                  <div className="aspect-video w-full overflow-hidden bg-gray-700/50" />
+                  <div className="h-48 w-full overflow-hidden bg-gray-700/50 md:h-[180px] lg:h-[200px] xl:h-[220px] 2xl:h-[240px]" />
                 )}
               </div>
 
