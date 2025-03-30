@@ -1,11 +1,14 @@
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import Link from 'next/link'
 import { Tag } from '@/src/widget/tag/ui/Tag'
-import { getAllPosts } from '@/src/entities/post/api/post'
+import { Post } from '@/src/entities/post/model/types'
 
-export default async function TagList() {
+interface TagListProps {
+  posts: Post[]
+}
+
+export default function TagList({ posts }: TagListProps) {
   // 모든 포스트에서 태그 추출
-  const posts = await getAllPosts()
   const allTags = posts.flatMap((post) => post.tags)
 
   // 중복 제거 및 태그별 게시글 수 계산
@@ -41,6 +44,9 @@ export default async function TagList() {
                 <div className="group transition-transform duration-300 hover:scale-105">
                   <div className="flex items-center gap-2">
                     <Tag tag={tag} />
+                    <span className="text-sm text-gray-400">
+                      ({tagCounts[tag]})
+                    </span>
                   </div>
                 </div>
               </Link>

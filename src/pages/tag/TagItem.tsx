@@ -1,17 +1,10 @@
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
-import { GetStaticPaths, GetStaticProps } from 'next'
-import { ParsedUrlQuery } from 'querystring'
 import { Post } from '@/src/entities/post/model/types'
 import Link from 'next/link'
-import { getAllPosts } from '@/src/entities/post/api/post'
 
 interface TagItemProps {
   posts: Post[]
-  tag: string
-}
-
-interface Params extends ParsedUrlQuery {
   tag: string
 }
 
@@ -49,33 +42,4 @@ export default function TagItem({ posts, tag }: TagItemProps) {
       )}
     </div>
   )
-}
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  const posts = await getAllPosts()
-  const tags = [...new Set(posts.flatMap((post) => post.tags))]
-
-  const paths = tags.map((tag) => ({
-    params: { tag },
-  }))
-
-  return {
-    paths,
-    fallback: false,
-  }
-}
-
-export const getStaticProps: GetStaticProps<TagItemProps, Params> = async ({
-  params,
-}) => {
-  const tag = params?.tag as string
-  const allPosts = await getAllPosts()
-  const filteredPosts = allPosts.filter((post) => post.tags.includes(tag))
-
-  return {
-    props: {
-      posts: filteredPosts,
-      tag,
-    },
-  }
 }
