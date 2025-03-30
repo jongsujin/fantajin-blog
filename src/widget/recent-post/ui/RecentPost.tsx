@@ -1,5 +1,6 @@
 import { Post } from '@/src/entities/post/model/types'
 import { format, parseISO } from 'date-fns'
+import Image from 'next/image'
 import { ko } from 'date-fns/locale'
 import Link from 'next/link'
 import { ArrowRight, Calendar, Tag as TagIcon } from 'lucide-react'
@@ -17,7 +18,19 @@ export default function RecentPost({ post }: RecentPostProps) {
             <div className="flex flex-col gap-8 md:flex-row">
               {/* 왼쪽: 그래디언트 배경 */}
               <div className="from-hoverColor/20 to-backgroundColor flex h-48 items-center justify-center overflow-hidden rounded-lg bg-gradient-to-br shadow-inner md:h-auto md:w-2/5">
-                <div className="aspect-video w-full overflow-hidden bg-gray-700/50" />
+                {post.thumbnail ? (
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={post.thumbnail}
+                      alt={post.title}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 40vw"
+                    />
+                  </div>
+                ) : (
+                  <div className="aspect-video w-full overflow-hidden bg-gray-700/50" />
+                )}
               </div>
 
               {/* 오른쪽: 콘텐츠 */}

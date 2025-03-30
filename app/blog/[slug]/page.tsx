@@ -8,14 +8,12 @@ export interface PostPageProps {
   }
 }
 
-
 export default async function PostPage({ params }: PostPageProps) {
   // params를 await 합니다
   const resolvedParams = await params
 
   if (!resolvedParams || !resolvedParams.slug) {
     notFound()
-    return null
   }
 
   try {
@@ -24,6 +22,5 @@ export default async function PostPage({ params }: PostPageProps) {
   } catch (error) {
     console.error(error)
     notFound()
-    return null
   }
 }

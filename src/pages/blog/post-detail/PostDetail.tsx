@@ -6,10 +6,11 @@ import { ko } from 'date-fns/locale'
 import { MDXRemote } from 'next-mdx-remote'
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { Comments } from '@/src/widget/comments/ui/Comments'
+import { MDXImage } from '@/src/shared/ui/MDXImage'
 
 // 커스텀 MDX 컴포넌트 (선택사항)
 const components = {
-  // 커스텀 컴포넌트 정의
+  img: MDXImage,
 }
 
 interface PostDetailProps {
