@@ -5,6 +5,7 @@ import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { MDXRemote } from 'next-mdx-remote'
 import { Card, CardContent } from '@/src/shared/ui/Card'
+import { Comments } from '@/src/widget/comments/ui/Comments'
 
 // 커스텀 MDX 컴포넌트 (선택사항)
 const components = {
@@ -44,6 +45,7 @@ export function PostDetail({ post }: PostDetailProps) {
               <MDXRemote {...post.content} components={components} />
             )}
           </div>
+          <Comments slug={post.slug} />
         </CardContent>
       </Card>
     </div>
