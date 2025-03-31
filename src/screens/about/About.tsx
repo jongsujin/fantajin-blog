@@ -10,7 +10,7 @@ export default function AboutPage() {
         <CardContent className="p-8">
           <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
             <div className="flex w-full justify-between">
-              <h2 className="mb-6 w-full border-b border-gray-800 pb-2 text-2xl font-bold text-gray-100">
+              <h2 className="mb-6 w-full border-b border-gray-800 pb-2 text-2xl font-bold">
                 Fanta Jin
               </h2>
             </div>
@@ -31,7 +31,7 @@ export default function AboutPage() {
 
             {/* 소개 텍스트 */}
             <div className="flex h-full flex-1 flex-col justify-center">
-              <p className="mb-6 leading-relaxed text-gray-300">
+              <p className="mb-6 leading-relaxed">
                 안녕하세요! 사용자 경험을 중요시 하는 프론트엔드 개발자입니다.
                 <br />
                 기술로 문제를 해결할 수 있는 개발자가 되기 위해 노력하고
@@ -40,7 +40,7 @@ export default function AboutPage() {
                 또한 새로운 기술을 배우고 적용하는 것을 좋아합니다.
               </p>
 
-              <p className="mb-6 leading-relaxed text-gray-300">
+              <p className="mb-6 leading-relaxed">
                 늘 성장하고 단단한 개발자가 되기 위해 노력하고 있습니다. <br />
                 성장과 도전을 최우선 가치로 여기며 빠르진 않아도 꾸준히 나아감을
                 목표로 하고 있습니다.
@@ -49,7 +49,7 @@ export default function AboutPage() {
               <div className="flex h-full gap-4">
                 <Link
                   href="https://github.com/fanta-jin"
-                  className="hover:text-hoverColor text-gray-400 transition-colors"
+                  className="hover:text-hoverColor transition-colors"
                 >
                   <Image
                     src="/logo/github.svg"
@@ -60,7 +60,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="https://www.linkedin.com/in/fanta-jin/"
-                  className="hover:text-hoverColor text-gray-400 transition-colors"
+                  className="hover:text-hoverColor transition-colors"
                 >
                   <Image
                     src="/logo/linkedin.svg"
@@ -71,7 +71,7 @@ export default function AboutPage() {
                 </Link>
                 <Link
                   href="mailto:jjs9836@naver.com"
-                  className="hover:text-hoverColor text-gray-400 transition-colors"
+                  className="hover:text-hoverColor transition-colors"
                 >
                   <Image
                     src="/logo/mail.svg"
@@ -86,15 +86,15 @@ export default function AboutPage() {
 
           {/** 할 수 있는 것 */}
           <div className="mt-12">
-            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold text-gray-100">
+            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold">
               핵심 역량
             </h2>
             <div className="space-y-8">
               <div>
-                <h3 className="mb-3 text-xl font-semibold text-gray-100">
+                <h3 className="mb-3 text-xl font-semibold">
                   Frontend Development
                 </h3>
-                <ul className="list-disc space-y-2 pl-5 text-gray-300">
+                <ul className="list-disc space-y-2 pl-5">
                   <li>React와 Next.js를 활용한 웹 애플리케이션 개발</li>
                   <li>TypeScript를 사용한 타입 안전성 확보</li>
                   <li>
@@ -107,10 +107,10 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <h3 className="mb-3 text-xl font-semibold text-gray-100">
+                <h3 className="mb-3 text-xl font-semibold">
                   Backend Development
                 </h3>
-                <ul className="list-disc space-y-2 pl-5 text-gray-300">
+                <ul className="list-disc space-y-2 pl-5">
                   <li>Node.js, Express를 활용한 RESTful API 개발</li>
                   <li>MySQL 데이터베이스 설계 및 관리</li>
                   <li>
@@ -125,17 +125,17 @@ export default function AboutPage() {
 
           {/* 경력 사항 */}
           <div className="mt-12">
-            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold text-gray-100">
+            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold">
               경력 사항
             </h2>
 
             <div className="space-y-8">
               <div className="bg-backgroundColor/50 rounded-lg p-6">
-                <h3 className="mb-2 text-xl font-semibold text-gray-100">
+                <h3 className="mb-2 text-xl font-semibold">
                   프론트엔드 개발자
                 </h3>
-                <p className="mb-3 text-gray-500">BIOMATZ | 2024.07 - 현재</p>
-                <ul className="list-disc pl-5 text-gray-400">
+                <p className="mb-3">BIOMATZ | 2024.07 - 현재</p>
+                <ul className="list-disc pl-5">
                   <li>React와 TypeScript를 활용한 웹 애플리케이션 개발</li>
                   <li>마이크로프론트엔드 아키텍처 설계 및 구현</li>
                   <li>주니어 개발자 멘토링 및 코드 리뷰</li>
@@ -146,16 +146,14 @@ export default function AboutPage() {
           </div>
 
           <div className="mt-12">
-            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold text-gray-100">
+            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold">
               기술 스택
             </h2>
 
             <div className="space-y-6">
               {/* 프론트엔드 기술 스택 */}
               <div>
-                <h3 className="mb-3 text-xl font-semibold text-gray-100">
-                  Frontend Stack
-                </h3>
+                <h3 className="mb-3 text-xl font-semibold">Frontend Stack</h3>
                 <div className="flex flex-wrap gap-3">
                   {[
                     'React',
@@ -176,9 +174,7 @@ export default function AboutPage() {
 
               {/* 백엔드 기술 스택 */}
               <div>
-                <h3 className="mb-3 text-xl font-semibold text-gray-100">
-                  Backend Stack
-                </h3>
+                <h3 className="mb-3 text-xl font-semibold">Backend Stack</h3>
                 <div className="flex flex-wrap gap-3">
                   {[
                     'Node.js',

@@ -14,7 +14,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Card className="hover:border-hoverColor/30 group bg-cardColor/90 h-full border border-gray-800/60 shadow-lg transition-all duration-300 hover:scale-102 hover:shadow-xl">
+      <Card className="no-border-light hover:border-hoverColor/30 group bg-cardColor/90 h-full border border-gray-800/60 shadow-lg transition-all duration-300 hover:scale-102 hover:shadow-xl">
         <CardContent>
           {post.thumbnail ? (
             <div className="relative mb-6 aspect-video w-full overflow-hidden rounded-lg">
@@ -36,13 +36,11 @@ export function PostCard({ post }: PostCardProps) {
             </span>
           </div>
 
-          <h2 className="group-hover:text-hoverColor mb-3 text-xl font-bold text-gray-100 transition-colors">
+          <h2 className="group-hover:text-hoverColor mb-3 text-xl font-bold transition-colors">
             {post.title}
           </h2>
 
-          <p className="mb-4 line-clamp-2 text-sm text-gray-400">
-            {post.description}
-          </p>
+          <p className="0 mb-4 line-clamp-2 text-sm">{post.description}</p>
 
           <div className="mb-4 flex flex-wrap gap-2">
             {post.tags.map((tag) => (

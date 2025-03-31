@@ -13,7 +13,7 @@ export default function RecentPost({ post }: RecentPostProps) {
   return (
     <div className="mb-12 w-full">
       <Link href={`/blog/${post.slug}`}>
-        <div className="group bg-cardColor hover:border-hoverColor/50 overflow-hidden rounded-xl border border-gray-800 shadow-xl transition-all duration-300 hover:shadow-2xl">
+        <div className="no-border-light group bg-cardColor hover:border-hoverColor/50 overflow-hidden rounded-xl border border-gray-800 shadow-xl transition-all duration-300 hover:shadow-2xl">
           <div className="p-6 md:p-8">
             <div className="flex flex-col gap-4 md:flex-row md:gap-6">
               {/* 왼쪽: 썸네일 이미지 */}
@@ -46,13 +46,11 @@ export default function RecentPost({ post }: RecentPostProps) {
                     </span>
                   </div>
 
-                  <h3 className="group-hover:text-hoverColor mb-4 text-2xl font-bold text-white transition-colors md:text-3xl">
+                  <h3 className="group-hover:text-hoverColor mb-4 text-2xl font-bold transition-colors md:text-3xl">
                     {post.title}
                   </h3>
 
-                  <p className="mb-6 line-clamp-3 text-gray-300">
-                    {post.description}
-                  </p>
+                  <p className="mb-6 line-clamp-3">{post.description}</p>
                 </div>
 
                 <div className="space-y-4">
@@ -60,10 +58,10 @@ export default function RecentPost({ post }: RecentPostProps) {
                     {post.tags.map((tag) => (
                       <div
                         key={tag}
-                        className="border-borderColor bg-backgroundColor flex items-center gap-1 rounded-full border px-3 py-1 shadow-2xl"
+                        className="tag-gradient order-borderColor bg-backgroundColor flex items-center gap-1 rounded-full border px-3 py-1 shadow-2xl"
                       >
                         <TagIcon size={12} className="text-hoverColor" />
-                        <span className="text-xs text-gray-300">{tag}</span>
+                        <span className="text-xs">{tag}</span>
                       </div>
                     ))}
                   </div>

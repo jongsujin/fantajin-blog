@@ -9,9 +9,6 @@ export default async function Home() {
       <Card>
         <CardContent>
           <BlogPage posts={posts} />
-          <div>
-            <h1>안녕</h1>
-          </div>
         </CardContent>
       </Card>
     </div>
