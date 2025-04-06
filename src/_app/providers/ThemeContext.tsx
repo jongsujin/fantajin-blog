@@ -34,6 +34,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       activeTheme = prefersDark ? 'dark' : 'light'
     }
 
+    console.log('activeTheme', activeTheme)
+
     // 테마 적용
     document.body.setAttribute('data-theme', activeTheme)
     setTheme(activeTheme)
