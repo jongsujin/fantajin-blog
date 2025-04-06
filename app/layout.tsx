@@ -1,43 +1,42 @@
-import type { Metadata } from "next";
-import { Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Providers } from "../src/_app/providers/Provider";
-import { Header } from "@/src/widget/header/ui/Header";
-
-
+import type { Metadata } from 'next'
+import { Geist_Mono } from 'next/font/google'
+import './globals.css'
+import { Providers } from '../src/_app/providers/Provider'
+import { Header } from '@/src/widget/header/ui/Header'
+import { ThemeProvider } from '@/src/_app/providers/ThemeContext'
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
-  title: "Fantajin Blog",
-  description: "Fantajin의 개발 블로그입니다.",
-};
+  title: 'Fantajin Blog',
+  description: 'Fantajin의 개발 블로그입니다.',
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="ko">
       <head>
-      <link
+        <link
           rel="stylesheet"
           as="style"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
         />
       </head>
-      <body
-        className={`${geistMono.variable} font-pretendard antialiased`}
-      >
-        <Providers>
-         <Header />
-        {children}
-        </Providers>
+      <body className={`${geistMono.variable} font-pretendard antialiased`}>
+        <ThemeProvider>
+          <Providers>
+            <Header />
+            {children}
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

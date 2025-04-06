@@ -55,7 +55,7 @@ export default function BlogPage({ posts }: BlogPageProps) {
       {recentPost && <RecentPost post={recentPost} />}
 
       {/* 최근 게시물 */}
-      <h2 className="mb-6 text-2xl font-bold text-gray-100">최근 게시물</h2>
+      <h2 className="mb-6 text-2xl font-bold">최근 게시물</h2>
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {remainingPosts &&
           remainingPosts.map((post) => (
@@ -65,7 +65,7 @@ export default function BlogPage({ posts }: BlogPageProps) {
 
       {/* 카테고리 박스 */}
       <div className="mt-12">
-        <h2 className="mb-6 text-2xl font-bold text-gray-100">카테고리</h2>
+        <h2 className="mb-6 text-2xl font-bold">카테고리</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((category) => (
             <Link key={category.id} href={category.href}>
