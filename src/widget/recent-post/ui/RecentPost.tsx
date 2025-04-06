@@ -50,7 +50,9 @@ export default function RecentPost({ post }: RecentPostProps) {
                     {post.title}
                   </h3>
 
-                  <p className="mb-6 line-clamp-3">{post.description}</p>
+                  <p className="mb-6 line-clamp-3 text-gray-300">
+                    {post.description}
+                  </p>
                 </div>
 
                 <div className="space-y-4">

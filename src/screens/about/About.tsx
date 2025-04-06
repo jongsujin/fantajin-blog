@@ -6,7 +6,7 @@ import { Tag } from '@/src/widget/tag/ui/Tag'
 export default function AboutPage() {
   return (
     <div className="container mx-auto px-4 py-12">
-      <Card className="bg-cardColor/90 border border-gray-800/60 shadow-lg">
+      <Card className="bg-cardColor/90 shadow-lg">
         <CardContent className="p-8">
           <div className="flex flex-col items-center gap-8 md:flex-row md:items-start">
             <div className="flex w-full justify-between">

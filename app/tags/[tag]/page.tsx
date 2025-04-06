@@ -14,7 +14,7 @@ export default async function TagPostsPage({ params }: TagPostsPageProps) {
   }
 
   const allPosts = await getAllPosts()
-  const tag = resolvedParams.tag
+  const tag = decodeURIComponent(resolvedParams.tag)
 
   // 태그에 해당하는 게시물이 있는지 확인
   const hasTaggedPosts = allPosts.some((post) => post.tags.includes(tag))
