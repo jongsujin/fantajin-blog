@@ -17,6 +17,14 @@ export default function BlogPage({ posts }: BlogPageProps) {
   // 카테고리 정의
   const categories = [
     {
+      id: 'about',
+      title: '내 소개',
+      description: '개발자 소개 및 이력',
+      icon: <User className="h-6 w-6 text-green-400" />,
+      href: '/about',
+      color: 'from-green-500/20 to-green-700/20',
+    },
+    {
       id: 'development',
       title: '개발',
       description: '프로그래밍 및 개발 관련 글',
@@ -27,23 +35,16 @@ export default function BlogPage({ posts }: BlogPageProps) {
     {
       id: 'life',
       title: '잡담',
-      description: '일상 및 생각 정리',
+      description: '재테크 및 생각 정리',
       icon: <Coffee className="h-6 w-6 text-yellow-400" />,
       href: '/life',
       color: 'from-yellow-500/20 to-yellow-700/20',
     },
-    {
-      id: 'about',
-      title: '내 소개',
-      description: '개발자 소개 및 이력',
-      icon: <User className="h-6 w-6 text-green-400" />,
-      href: '/about',
-      color: 'from-green-500/20 to-green-700/20',
-    },
+
     {
       id: 'ai',
       title: 'AI',
-      description: '인공지능 관련 글',
+      description: 'AI 학습 글',
       icon: <Bot className="h-6 w-6 text-purple-400" />,
       href: '/tags/ai',
       color: 'from-purple-500/20 to-purple-700/20',
@@ -54,8 +55,6 @@ export default function BlogPage({ posts }: BlogPageProps) {
     <div className="mx-auto w-full max-w-7xl px-4 py-8">
       {recentPost && <RecentPost post={recentPost} />}
 
-      {/* 최근 게시물 */}
-      <h2 className="mb-6 text-2xl font-bold">최근 게시물</h2>
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {remainingPosts &&
           remainingPosts.map((post) => (
@@ -65,7 +64,6 @@ export default function BlogPage({ posts }: BlogPageProps) {
 
       {/* 카테고리 박스 */}
       <div className="mt-12">
-        <h2 className="mb-6 text-2xl font-bold">카테고리</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {categories.map((category) => (
             <Link key={category.id} href={category.href}>
