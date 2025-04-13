@@ -1,6 +1,12 @@
 'use client'
 
-import { Post } from '@/src/entities/post/model/types'
+import {
+  MDXCodeProps,
+  MDXHeadingProps,
+  MDXListProps,
+  MDXPreProps,
+  PostDetailProps,
+} from '@/src/entities/post/model/types'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { MDXRemote } from 'next-mdx-remote'
@@ -8,13 +14,55 @@ import { Card, CardContent } from '@/src/shared/ui/Card'
 import { Comments } from '@/src/widget/comments/ui/Comments'
 import { MDXImage } from '@/src/shared/ui/MDXImage'
 
-// 커스텀 MDX 컴포넌트 (선택사항)
 const components = {
   img: MDXImage,
-}
-
-interface PostDetailProps {
-  post: Post
+  h1: ({ children, ...props }: MDXHeadingProps) => (
+    <h1 className="mt-8 mb-4 text-3xl font-bold" {...props}>
+      {children}
+    </h1>
+  ),
+  h2: ({ children, ...props }: MDXHeadingProps) => (
+    <h2 className="mt-6 mb-3 text-2xl font-bold" {...props}>
+      {children}
+    </h2>
+  ),
+  h3: ({ children, ...props }: MDXHeadingProps) => (
+    <h3 className="mt-5 mb-2 text-xl font-bold" {...props}>
+      {children}
+    </h3>
+  ),
+  p: ({ children, ...props }: MDXHeadingProps) => (
+    <p className="my-4 leading-relaxed" {...props}>
+      {children}
+    </p>
+  ),
+  ul: ({ children, ...props }: MDXListProps) => (
+    <ul className="my-4 list-disc pl-6" {...props}>
+      {children}
+    </ul>
+  ),
+  ol: ({
+    children,
+    className,
+    ...props
+  }: React.OlHTMLAttributes<HTMLOListElement>) => (
+    <ol className={`my-4 list-decimal pl-6 ${className || ''}`} {...props}>
+      {children}
+    </ol>
+  ),
+  code: ({ children, ...props }: MDXCodeProps) => (
+    <code
+      className="rounded bg-gray-800 px-1 py-0.5 font-mono text-sm"
+      {...props}
+    >
+      {children}
+    </code>
+  ),
+  pre: ({ children, ...props }: MDXPreProps) => (
+    <pre className="my-4 overflow-x-auto rounded-lg bg-gray-800 p-4" {...props}>
+      {children}
+    </pre>
+  ),
 }
 
 export default function PostDetail({ post }: PostDetailProps) {
@@ -41,7 +89,6 @@ export default function PostDetail({ post }: PostDetailProps) {
             </div>
           </div>
           <div>
-            {/* MDXRemote 컴포넌트로 직렬화된 콘텐츠 렌더링 */}
             {post.content && (
               <MDXRemote {...post.content} components={components} />
             )}
