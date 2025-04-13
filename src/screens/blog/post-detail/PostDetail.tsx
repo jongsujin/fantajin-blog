@@ -71,9 +71,7 @@ export default function PostDetail({ post }: PostDetailProps) {
       <Card>
         <CardContent className="prose prose-invert max-w-none">
           <div className="mb-8">
-            <h1 className="mb-2 text-3xl font-bold text-gray-100">
-              {post.title}
-            </h1>
+            <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
             <p className="text-sm text-gray-500">
               {format(parseISO(post.date), 'yyyy년 MM월 dd일', { locale: ko })}
             </p>
@@ -81,7 +79,7 @@ export default function PostDetail({ post }: PostDetailProps) {
               {post.tags.map((tag) => (
                 <span
                   key={tag}
-                  className="bg-backgroundColor/80 rounded-full px-3 py-1 text-xs text-gray-400"
+                  className="bg-backgroundColor/80 rounded-full border border-gray-400 px-3 py-1 text-xs text-gray-400"
                 >
                   {tag}
                 </span>
