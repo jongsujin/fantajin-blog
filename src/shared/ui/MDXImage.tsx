@@ -19,9 +19,9 @@ export function MDXImage({ src, alt, width, height }: MDXImageProps) {
       <Image
         src={imageSrc}
         alt={alt}
-        width={width || 800}
+        width={width || 1000}
         height={height || 500}
-        className={`rounded-lg transition-opacity duration-300 ${
+        className={`mx-auto rounded-lg transition-opacity duration-300 ${
           isLoading ? 'opacity-0' : 'opacity-100'
         }`}
         onLoadingComplete={() => setIsLoading(false)}
