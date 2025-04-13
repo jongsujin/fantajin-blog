@@ -27,12 +27,12 @@ export default function TagList({ posts }: TagListProps) {
     <div className="container mx-auto px-4 py-12">
       <Card className="bg-cardColor/90 border border-gray-800/60 shadow-lg">
         <CardContent className="p-8">
-          <h1 className="mb-8 border-b border-gray-800 pb-2 text-3xl font-bold text-gray-100">
+          <h1 className="mb-8 border-b border-gray-800 pb-2 text-3xl font-bold">
             태그 목록
           </h1>
 
           <div className="mb-8">
-            <p className="mb-4 text-gray-300">
+            <p className="mb-4">
               블로그에 사용된 모든 태그 목록입니다. 태그를 클릭하면 해당 태그의
               게시글을 볼 수 있습니다.
             </p>
