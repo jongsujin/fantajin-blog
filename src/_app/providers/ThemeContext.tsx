@@ -45,7 +45,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const toggleTheme = () => {
     const newTheme = theme === 'light' ? 'dark' : 'light'
     setTheme(newTheme)
-    document.body.setAttribute('data-theme', newTheme)
+    document.body.setAttribute(
+      'data-theme',
+      newTheme === 'light' ? 'dark' : 'light',
+    )
     localStorage.setItem('theme', newTheme)
   }
 

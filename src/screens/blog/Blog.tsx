@@ -1,6 +1,5 @@
 import { Post } from '@/src/entities/post/model/types'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
-import RecentPost from '@/src/widget/recent-post/ui/RecentPost'
 import Link from 'next/link'
 import { BookOpen, Coffee, User, Bot, ArrowRight } from 'lucide-react'
 
@@ -9,9 +8,6 @@ interface BlogPageProps {
 }
 
 export default function BlogPage({ posts }: BlogPageProps) {
-  const recentPost = posts[0]
-  const remainingPosts = posts.slice(1)
-
   const developmentTags = encodeURIComponent('개발')
 
   // 카테고리 정의
@@ -52,14 +48,9 @@ export default function BlogPage({ posts }: BlogPageProps) {
   ]
 
   return (
-    <div className="mx-auto w-full max-w-7xl px-4 py-8">
-      {recentPost && <RecentPost post={recentPost} />}
-
+    <div className="mx-auto my-10 w-full max-w-7xl px-4 py-8">
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {remainingPosts &&
-          remainingPosts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
+        {posts && posts.map((post) => <PostCard key={post.slug} post={post} />)}
       </div>
 
       {/* 카테고리 박스 */}

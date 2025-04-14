@@ -44,9 +44,9 @@ export function Header() {
             aria-label="테마 전환"
           >
             {theme === 'dark' ? (
-              <Moon className="text-textColor h-5 w-5" />
-            ) : (
               <Sun className="text-textColor h-5 w-5" />
+            ) : (
+              <Moon className="text-textColor h-5 w-5" />
             )}
           </button>
         </div>
