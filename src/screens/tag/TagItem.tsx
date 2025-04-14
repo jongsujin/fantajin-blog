@@ -16,7 +16,7 @@ export default function TagItem({ posts, tag }: TagItemProps) {
           <div className="flex w-full items-center justify-between">
             <h1 className="flex items-center gap-3 text-center text-2xl font-bold text-gray-100">
               <p>
-                <span className="text-textColor">{tag}</span> 관련 게시글
+                <span>{tag}</span> 관련 게시글
               </p>
             </h1>
             <Link
