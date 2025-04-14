@@ -10,7 +10,7 @@ interface TagItemProps {
 
 export default function TagItem({ posts, tag }: TagItemProps) {
   return (
-    <div className="container mx-auto px-4 py-12">
+    <div className="container mx-auto w-full max-w-7xl px-4 py-12">
       <Card className="bg-cardColor/90 mb-8 border border-gray-800/60 shadow-lg">
         <CardContent className="p-8">
           <div className="flex w-full items-center justify-between">
@@ -29,7 +29,7 @@ export default function TagItem({ posts, tag }: TagItemProps) {
         </CardContent>
       </Card>
 
-      <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4">
         {posts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}

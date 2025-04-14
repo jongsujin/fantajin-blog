@@ -26,7 +26,7 @@ export default function TagList({ posts }: TagListProps) {
   return (
     <div className="container mx-auto px-4 py-12">
       <Card className="bg-cardColor/90 border border-gray-800/60 shadow-lg">
-        <CardContent className="p-8">
+        <CardContent className="p-4">
           <h1 className="mb-8 border-b border-gray-800 pb-2 text-3xl font-bold">
             태그 목록
           </h1>

@@ -1,7 +1,7 @@
 import { Post } from '@/src/entities/post/model/types'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
 import Link from 'next/link'
-import { BookOpen, Coffee, User, Bot, ArrowRight } from 'lucide-react'
+import { BookOpen, Coffee, User, ArrowRight } from 'lucide-react'
 
 interface BlogPageProps {
   posts: Post[]
@@ -12,6 +12,14 @@ export default function BlogPage({ posts }: BlogPageProps) {
 
   // 카테고리 정의
   const categories = [
+    {
+      id: 'all',
+      title: '모든 글',
+      description: '모든 글 보기',
+      icon: <BookOpen className="h-6 w-6 text-gray-400" />,
+      href: '/',
+      color: 'from-gray-500/20 to-gray-700/20',
+    },
     {
       id: 'about',
       title: '내 소개',
@@ -35,15 +43,6 @@ export default function BlogPage({ posts }: BlogPageProps) {
       icon: <Coffee className="h-6 w-6 text-yellow-400" />,
       href: '/life',
       color: 'from-yellow-500/20 to-yellow-700/20',
-    },
-
-    {
-      id: 'ai',
-      title: 'AI',
-      description: 'AI 학습 글',
-      icon: <Bot className="h-6 w-6 text-purple-400" />,
-      href: '/tags/ai',
-      color: 'from-purple-500/20 to-purple-700/20',
     },
   ]
 
