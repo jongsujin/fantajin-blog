@@ -12,14 +12,7 @@ export default function BlogPage({ posts }: BlogPageProps) {
 
   // 카테고리 정의
   const categories = [
-    {
-      id: 'all',
-      title: '모든 글',
-      description: '모든 글 보기',
-      icon: <BookOpen className="h-6 w-6 text-gray-400" />,
-      href: '/',
-      color: 'from-gray-500/20 to-gray-700/20',
-    },
+  
     {
       id: 'about',
       title: '내 소개',
@@ -47,14 +40,14 @@ export default function BlogPage({ posts }: BlogPageProps) {
   ]
 
   return (
-    <div className="mx-auto my-10 w-full max-w-7xl px-4 py-8">
-      <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <div className="mx-auto my-10 w-[80%] max-w-7xl px-4 py-8">
+      <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
         {posts && posts.map((post) => <PostCard key={post.slug} post={post} />)}
       </div>
 
       {/* 카테고리 박스 */}
       <div className="mt-12">
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid grid-cols-3 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
           {categories.map((category) => (
             <Link key={category.id} href={category.href}>
               <div

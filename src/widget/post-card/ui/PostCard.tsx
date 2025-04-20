@@ -17,17 +17,18 @@ export function PostCard({ post }: PostCardProps) {
       <Card className="no-border-light hover:border-hoverColor/30 group bg-cardColor/90 h-full border border-gray-800/60 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
         <CardContent className="p-4">
           {post.thumbnail ? (
-            <div className="relative mb-4 h-48 w-full overflow-hidden rounded-lg">
+            <div className="relative mb-4 w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-700/20">
               <Image
                 src={post.thumbnail}
                 alt={post.title}
                 fill
                 className="object-cover object-center transition-transform duration-300 group-hover:scale-105"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                style={{ objectFit: 'cover' }}
               />
             </div>
           ) : (
-            <div className="h-48 w-full overflow-hidden rounded-lg bg-gray-700/50" />
+            <div className="w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-700/50" />
           )}
           <div className="my-2 flex items-center gap-2 text-gray-500">
             <Calendar size={14} />

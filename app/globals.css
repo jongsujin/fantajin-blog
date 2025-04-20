@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-/* @config '../tailwind.config.ts'; */
+
 
 :root {
   --background: #ffffff;
@@ -17,6 +17,7 @@
     format('woff2');
 }
 
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -30,6 +31,8 @@
     --foreground: #ededed;
   }
 }
+
+
 
 body[data-theme='light'] {
   background: var(--background);
