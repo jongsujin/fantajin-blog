@@ -42,7 +42,7 @@ body[data-theme='dark'] {
 }
 
 body[data-theme='dark'] .postcard-border {
-  border: 1px solid var(--tag-border) !important;
+  border: 3px solid var(--tag-border) !important;
 }
 
 /* 마크다운 목록 스타일링 */
