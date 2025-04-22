@@ -68,7 +68,7 @@ const components = {
 export default function PostDetail({ post }: PostDetailProps) {
   return (
     <div className="container mx-auto px-4 py-8">
-      <Card>
+      <Card className="postcard-border">
         <CardContent className="prose prose-invert max-w-none">
           <div className="mb-8">
             <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
