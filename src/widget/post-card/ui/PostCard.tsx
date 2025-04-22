@@ -14,7 +14,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Card className="no-border-light hover:border-hoverColor/30 group bg-cardColor/90 h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+      <Card className="group bg-cardColor/90 postcard-border h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border">
         <CardContent className="p-4">
           {post.thumbnail ? (
             <div className="relative mb-4 aspect-[16/10] w-full overflow-hidden rounded-lg bg-gray-700/20">
