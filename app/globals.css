@@ -26,8 +26,8 @@
 }
 
 body[data-theme='light'] {
-  background: var(--background);
-  color: var(--foreground);
+  background: #ffffff;
+  color: #171717;
   font-family: 'Pretendard Variable', sans-serif;
 }
 body[data-theme='light'] .postcard-border {
@@ -36,13 +36,13 @@ body[data-theme='light'] .postcard-border {
 
 body[data-theme='dark'] {
   --tag-border: #374151; /* 어두운 회색 테두리 */
-  background: var(--foreground);
-  color: var(--background);
+  background: #171717;
+  color: #ededed;
   font-family: 'Pretendard Variable', sans-serif;
 }
 
 body[data-theme='dark'] .postcard-border {
-  border: 3px solid var(--tag-border) !important;
+  border: 3px solid #374151 !important;
 }
 
 /* 마크다운 목록 스타일링 */
