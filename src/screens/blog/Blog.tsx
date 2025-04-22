@@ -1,44 +1,14 @@
 import { Post } from '@/src/entities/post/model/types'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
 import Link from 'next/link'
-import { BookOpen, Coffee, User, ArrowRight } from 'lucide-react'
+import { ArrowRight } from 'lucide-react'
+import { categories } from '@/src/entities/category/model/category'
 
 interface BlogPageProps {
   posts: Post[]
 }
 
 export default function BlogPage({ posts }: BlogPageProps) {
-  const developmentTags = encodeURIComponent('개발')
-
-  // 카테고리 정의
-  const categories = [
-  
-    {
-      id: 'about',
-      title: '내 소개',
-      description: '개발자 소개 및 이력',
-      icon: <User className="h-6 w-6 text-green-400" />,
-      href: '/about',
-      color: 'from-green-500/20 to-green-700/20',
-    },
-    {
-      id: 'development',
-      title: '개발',
-      description: '프로그래밍 및 개발 관련 글',
-      icon: <BookOpen className="h-6 w-6 text-blue-400" />,
-      href: `/tags/${developmentTags}`,
-      color: 'from-blue-500/20 to-blue-700/20',
-    },
-    {
-      id: 'life',
-      title: '잡담',
-      description: '재테크 및 생각 정리',
-      icon: <Coffee className="h-6 w-6 text-yellow-400" />,
-      href: '/life',
-      color: 'from-yellow-500/20 to-yellow-700/20',
-    },
-  ]
-
   return (
     <div className="mx-auto my-10 w-[80%] max-w-7xl px-4 py-8">
       <div className="grid w-full gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">

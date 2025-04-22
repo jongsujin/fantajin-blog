@@ -14,10 +14,10 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Card className="no-border-light hover:border-hoverColor/30 group bg-cardColor/90 h-full border border-gray-800/60 shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
+      <Card className="no-border-light hover:border-hoverColor/30 group bg-cardColor/90 h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl">
         <CardContent className="p-4">
           {post.thumbnail ? (
-            <div className="relative mb-4 w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-700/20">
+            <div className="relative mb-4 aspect-[16/10] w-full overflow-hidden rounded-lg bg-gray-700/20">
               <Image
                 src={post.thumbnail}
                 alt={post.title}
@@ -28,7 +28,7 @@ export function PostCard({ post }: PostCardProps) {
               />
             </div>
           ) : (
-            <div className="w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-700/50" />
+            <div className="aspect-[16/10] w-full overflow-hidden rounded-lg bg-gray-700/50" />
           )}
           <div className="my-2 flex items-center gap-2 text-gray-500">
             <Calendar size={14} />

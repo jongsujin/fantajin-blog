@@ -12,7 +12,7 @@ export function Header() {
 
   return (
     <header className="bg-backgroundColor bg-opacity-90 sticky top-0 z-50 w-full border-b border-gray-800 transition-opacity duration-300">
-      <div className="container flex h-16 items-center justify-between space-x-4 sm:justify-between sm:space-x-0">
+      <div className="flex h-16 w-full items-center justify-between space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex items-center space-x-4">
           <Link href="/" className="ml-5 flex items-center space-x-2">
             <CircleIcon className="h-6 w-6 text-gray-400" />
