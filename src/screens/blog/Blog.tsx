@@ -10,7 +10,7 @@ interface BlogPageProps {
 
 export default function BlogPage({ posts }: BlogPageProps) {
   const encodedTag = encodeURIComponent('개발')
-  const previewPosts = posts.slice(0, 3)
+  const previewPosts = posts.slice(0, 9)
   return (
     <div className="mx-auto w-[80%] max-w-7xl">
       <CategoryBox />
