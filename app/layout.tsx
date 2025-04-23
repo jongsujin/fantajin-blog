@@ -4,6 +4,7 @@ import './globals.css'
 import { Providers } from '../src/_app/providers/Provider'
 import { Header } from '@/src/widget/header/ui/Header'
 import { ThemeProvider } from '@/src/_app/providers/ThemeContext'
+import { Analytics } from '@vercel/analytics/react'
 
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
@@ -34,6 +35,7 @@ export default function RootLayout({
           <Providers>
             <Header />
             {children}
+            <Analytics />
           </Providers>
         </ThemeProvider>
       </body>
