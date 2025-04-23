@@ -102,7 +102,7 @@ export default function AboutPage() {
                   </li>
                   <li>Recoil, Context API를 이용한 상태 관리</li>
                   <li>Cypress, React Testing Library를 활용한 테스트 작성</li>
-                  <li>웹 성능 최적화 및 접근성 개선</li>
+                  <li>Cytoscape.js, ApexCharts 등을 활용한 대규모 데이타 시각화 대시보드 플랫폼 구현 경험</li>
                 </ul>
               </div>
 
@@ -116,7 +116,6 @@ export default function AboutPage() {
                   <li>
                     AWS Lambda, DynamoDB를 활용한 서버리스 애플리케이션 구축
                   </li>
-                  <li>JWT를 이용한 인증 시스템 구현</li>
                   <li>AWS, Vercel을 활용한 배포 및 CI/CD 파이프라인 구축</li>
                 </ul>
               </div>
@@ -136,10 +135,11 @@ export default function AboutPage() {
                 </h3>
                 <p className="mb-3">BIOMATZ | 2024.07 - 현재</p>
                 <ul className="list-disc pl-5">
-                  <li>React와 TypeScript를 활용한 웹 애플리케이션 개발</li>
-                  <li>마이크로프론트엔드 아키텍처 설계 및 구현</li>
-                  <li>주니어 개발자 멘토링 및 코드 리뷰</li>
-                  <li>성능 최적화 및 접근성 개선</li>
+                  <li>기존 Dash 기반 플랫폼 React로 마이그레이션 작업 달성</li>
+                  <li>대용량 데이터 시각화 대시보드 플랫폼 구현 및 캐싱과 무한스크롤 등으로 시각화 시간 90% 이상 개선</li>
+                  <li>AWS 인프라에 맞춰 S3 및 GitHub Actions를 활용한 CI/CD 파이프라인 구축</li>
+                  <li>Next.js 기반 사내 데이터 기반 챗봇 서비스 구현</li>
+                  <li>Express.js를 활용한 API 서버 개발과 DB 쿼리 최적화 및 프론트엔드 캐싱 전략으로 데이터 처리 시간 80% 이상 개선</li>
                 </ul>
               </div>
             </div>
