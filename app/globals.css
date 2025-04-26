@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'highlight.js/styles/vs.css';
 
 :root {
   --background: #ffffff;
@@ -29,9 +30,15 @@ body[data-theme='light'] {
   background: #ffffff;
   color: #171717;
   font-family: 'Pretendard Variable', sans-serif;
+  --hljs-bg: #f6f8fa;
 }
 body[data-theme='light'] .postcard-border {
   border: none !important;
+}
+
+body[data-theme='light'] .tag-border {
+  border : none !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 body[data-theme='dark'] {
@@ -39,10 +46,17 @@ body[data-theme='dark'] {
   background: #171717;
   color: #ededed;
   font-family: 'Pretendard Variable', sans-serif;
+  
 }
 
 body[data-theme='dark'] .postcard-border {
   border: 3px solid #374151 !important;
+  --hljs-bg: #374151;
+}
+
+body[data-theme='dark'] .tag-border {
+  border: 3px solid #374151 !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 /* 마크다운 목록 스타일링 */
@@ -67,51 +81,31 @@ body[data-theme='dark'] .postcard-border {
 }
 
 /* 코드 블록 스타일링 */
-.prose pre {
-  background-color: #1e2939 !important;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  overflow-x: auto;
-}
-
-.prose code {
-  background-color: rgba(30, 41, 57, 0.7);
-  color: #e5e7eb;
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-family: var(--font-mono);
-  font-size: 0.875rem;
-}
-
-.prose pre code {
-  background-color: transparent !important;
-  padding: 0 !important;
-}
-
-/* 코드 하이라이팅 스타일 */
-pre {
-  background: #1e2939 !important;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1rem 0;
-  overflow-x: auto;
-}
-
-pre code {
-  background: transparent !important;
-  padding: 0 !important;
-  color: #e5e7eb !important;
-}
-
 :not(pre) > code {
-  background: rgba(30, 41, 57, 0.7);
-  color: #e5e7eb;
+
+  background: var(--hljs-bg);
+  color: var(--hljs-color);
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: var(--font-geist-mono);
-  font-size: 0.875rem;
 }
+
+/* 코드 블록 컨테이너만 스타일링 (내부 코드는 highlight.js에 맡김) */
+.prose pre {
+  background-color: var(--hljs-bg);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+/* 코드 블록 내부 코드는 highlight.js가 처리하도록 함 */
+.prose pre code {
+  background-color: transparent !important;
+  padding: 0 !important;
+  color: inherit;
+}
+
 
 /* 체크박스 스타일링 */
 input[type='checkbox'] {

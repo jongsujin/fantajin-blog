@@ -1,10 +1,8 @@
 'use client'
 
 import {
-  MDXCodeProps,
   MDXHeadingProps,
   MDXListProps,
-  MDXPreProps,
   PostDetailProps,
 } from '@/src/entities/post/model/types'
 import { format, parseISO } from 'date-fns'
@@ -17,27 +15,27 @@ import { MDXImage } from '@/src/shared/ui/MDXImage'
 const components = {
   img: MDXImage,
   h1: ({ children, ...props }: MDXHeadingProps) => (
-    <h1 className="mt-8 mb-4 text-3xl font-bold" {...props}>
+    <h1 className="mt-8 mb-4 text-4xl font-bold" {...props}>
       {children}
     </h1>
   ),
   h2: ({ children, ...props }: MDXHeadingProps) => (
-    <h2 className="mt-6 mb-3 text-2xl font-bold" {...props}>
+    <h2 className="mt-6 mb-3 text-3xl font-bold" {...props}>
       {children}
     </h2>
   ),
   h3: ({ children, ...props }: MDXHeadingProps) => (
-    <h3 className="mt-5 mb-2 text-xl font-bold" {...props}>
+    <h3 className="mt-5 mb-2 text-2xl font-bold" {...props}>
       {children}
     </h3>
   ),
   p: ({ children, ...props }: MDXHeadingProps) => (
-    <p className="my-4 leading-relaxed" {...props}>
+    <p className="my-4 text-xl leading-relaxed" {...props}>
       {children}
     </p>
   ),
   ul: ({ children, ...props }: MDXListProps) => (
-    <ul className="my-4 list-disc pl-6" {...props}>
+    <ul className="my-4 text-xl list-disc pl-6" {...props}>
       {children}
     </ul>
   ),
@@ -46,23 +44,23 @@ const components = {
     className,
     ...props
   }: React.OlHTMLAttributes<HTMLOListElement>) => (
-    <ol className={`my-4 list-decimal pl-6 ${className || ''}`} {...props}>
+    <ol className={`my-4 text-xl list-decimal pl-6 ${className || ''}`} {...props}>
       {children}
     </ol>
   ),
-  code: ({ children, ...props }: MDXCodeProps) => (
-    <code
-      className="rounded bg-gray-800 px-1 py-0.5 font-mono text-sm"
-      {...props}
-    >
-      {children}
-    </code>
-  ),
-  pre: ({ children, ...props }: MDXPreProps) => (
-    <pre className="my-4 overflow-x-auto rounded-lg bg-gray-800 p-4" {...props}>
+  pre: ({ children, ...props }: React.HTMLAttributes<HTMLPreElement>) => (
+    <pre className="rounded-lg overflow-auto p-4" {...props}>
       {children}
     </pre>
   ),
+  code: ({ className, children, ...props }: React.HTMLAttributes<HTMLElement>) => {
+    return (
+      <code className={className} {...props}>
+        {children}
+      </code>
+    );
+  },
+ 
 }
 
 export default function PostDetail({ post }: PostDetailProps) {
@@ -88,7 +86,11 @@ export default function PostDetail({ post }: PostDetailProps) {
           </div>
           <div>
             {post.content && (
-              <MDXRemote {...post.content} components={components} />
+              <MDXRemote
+                {...post.content}
+                components={components}
+         
+              />
             )}
           </div>
           <Comments slug={post.slug} />
