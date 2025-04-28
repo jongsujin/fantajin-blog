@@ -9,12 +9,13 @@ interface TagItemProps {
 }
 
 export default function TagItem({ posts, tag }: TagItemProps) {
+  const filteredPosts = posts.filter((post) => post.tags.includes(tag))
   return (
     <div className="container mx-auto w-[80%] max-w-7xl px-4 py-12">
       <Card className="bg-cardColor/90 mb-8 shadow-lg">
         <CardContent className="p-8">
           <div className="flex w-full items-center justify-between">
-            <h1 className="flex items-center gap-3 text-center text-2xl font-bold ">
+            <h1 className="flex items-center gap-3 text-center text-2xl font-bold">
               <p>
                 <span>{tag}</span> 관련 게시글
               </p>
@@ -30,12 +31,12 @@ export default function TagItem({ posts, tag }: TagItemProps) {
       </Card>
 
       <div className="grid grid-cols-3 gap-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-        {posts.map((post) => (
+        {filteredPosts.map((post) => (
           <PostCard key={post.slug} post={post} />
         ))}
       </div>
 
-      {posts.length === 0 && (
+      {filteredPosts.length === 0 && (
         <div className="py-12 text-center">
           <p className="text-gray-400">이 태그에 해당하는 게시글이 없습니다.</p>
         </div>

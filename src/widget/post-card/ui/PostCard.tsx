@@ -4,7 +4,7 @@ import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
 import { Post } from '@/src/entities/post/model/types'
 import { Card, CardContent } from '@/src/shared/ui/Card'
-import { Calendar, ArrowRight } from 'lucide-react'
+import { Calendar } from 'lucide-react'
 import { Tag } from '../../tag/ui/Tag'
 
 interface PostCardProps {
@@ -14,7 +14,7 @@ interface PostCardProps {
 export function PostCard({ post }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
-      <Card className="group  bg-cardColor/90 postcard-border h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border">
+      <Card className="group bg-cardColor/90 postcard-border h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border">
         <CardContent className="p-4">
           {post.thumbnail ? (
             <div className="relative mb-4 aspect-video w-full overflow-hidden rounded-lg bg-gray-700/20">
@@ -40,19 +40,12 @@ export function PostCard({ post }: PostCardProps) {
             {post.title}
           </h2>
 
-          <p className="mb-3 line-clamp-2  text-gray-300">
-            {post.description}
-          </p>
+          <p className="mb-3 line-clamp-2 text-gray-300">{post.description}</p>
 
           <div className="mb-3 flex flex-wrap gap-1.5">
             {post.tags.map((tag) => (
               <Tag key={tag} tag={tag} />
             ))}
-          </div>
-
-          <div className="text-hoverColor mt-auto flex items-center  transition-transform duration-300 group-hover:translate-x-1">
-            <span className="mr-1 font-medium">읽기</span>
-            <ArrowRight size={12} />
           </div>
         </CardContent>
       </Card>
