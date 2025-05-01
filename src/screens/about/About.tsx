@@ -59,7 +59,7 @@ export default function AboutPage() {
                   />
                 </Link>
                 <Link
-                  href="https://www.linkedin.com/in/fanta-jin/"
+                  href="https://www.linkedin.com/in/%EC%A2%85%EC%88%98-%EC%A7%84-723550332/?trk=opento_sprofile_goalscard"
                   className="hover:text-hoverColor transition-colors"
                 >
                   <Image
