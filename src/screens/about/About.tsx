@@ -100,9 +100,11 @@ export default function AboutPage() {
                   <li>
                     Tailwind CSS, Styled Components를 활용한 반응형 UI 구현
                   </li>
-                  <li>Recoil, Context API를 이용한 상태 관리</li>
-                  <li>Cypress, React Testing Library를 활용한 테스트 작성</li>
-                  <li>Cytoscape.js, ApexCharts 등을 활용한 대규모 데이타 시각화 대시보드 플랫폼 구현 경험</li>
+                  <li>Cypress, Vitest를 활용한 테스트 환경 구축</li>
+                  <li>
+                    Cytoscape.js, ApexCharts 등을 활용한 대규모 데이터터 시각화
+                    대시보드 플랫폼 구현 경험
+                  </li>
                 </ul>
               </div>
 
@@ -136,10 +138,72 @@ export default function AboutPage() {
                 <p className="mb-3">BIOMATZ | 2024.07 - 현재</p>
                 <ul className="list-disc pl-5">
                   <li>기존 Dash 기반 플랫폼 React로 마이그레이션 작업 달성</li>
-                  <li>대용량 데이터 시각화 대시보드 플랫폼 구현 및 캐싱과 무한스크롤 등으로 시각화 시간 90% 이상 개선</li>
-                  <li>AWS 인프라에 맞춰 S3 및 GitHub Actions를 활용한 CI/CD 파이프라인 구축</li>
-                  <li>Next.js 기반 사내 데이터 기반 챗봇 서비스 구현</li>
-                  <li>Express.js를 활용한 API 서버 개발과 DB 쿼리 최적화 및 프론트엔드 캐싱 전략으로 데이터 처리 시간 80% 이상 개선</li>
+                  <li>
+                    대용량 데이터 시각화 대시보드 플랫폼 구현 및 캐싱과
+                    무한스크롤 등으로 시각화 시간 90% 이상 개선
+                  </li>
+                  <li>
+                    AWS 인프라에 맞춰 S3 및 GitHub Actions를 활용한 CI/CD
+                    파이프라인 구축
+                  </li>
+                  <li>
+                    Gemini API와 사내 데이터를 활용한 Next.js 기반 챗봇 서비스
+                    구현
+                  </li>
+                  <li>
+                    Express.js를 활용한 API 서버 개발과 DB 쿼리 최적화 및
+                    프론트엔드 캐싱 전략으로 데이터 처리 시간 80% 이상 개선
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-12">
+            <h2 className="mb-6 border-b border-gray-800 pb-2 text-2xl font-bold">
+              기타 활동
+            </h2>
+            <div className="space-y-8">
+              <div className="bg-backgroundColor/50 rounded-lg p-6">
+                <h3 className="mb-2 text-xl font-semibold">
+                  오픈소스 컨트리뷰션 아카데미 멘티
+                </h3>
+                <p className="mb-3">2024.09 - 2024.10</p>
+                <ul className="list-disc pl-5">
+                  <li>AntDesign 라이브러리 한글화 작업 참여</li>
+                  <li>
+                    AntDesign 컴포넌트 번역 파트를 맡아, 사용자 친화적인 번역
+                    작업을 하기 위한 팀 내 협업 경험
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-backgroundColor/50 rounded-lg p-6">
+                <h3 className="mb-2 text-xl font-semibold">
+                  야놀자X패스트캠퍼스 프론트엔드 부트캠프 1기
+                </h3>
+                <p className="mb-3">2023.07 - 2024.01</p>
+                <ul className="list-disc pl-5">
+                  <li>
+                    야놀자X패스트캠퍼스 프론트엔드 부트캠프 1기 교육생으로 참여
+                  </li>
+                  <li>
+                    Next.js , React 기반의 협업 프로젝트를 경험하였고 우수
+                    수료생 선정
+                  </li>
+                </ul>
+              </div>
+              <div className="bg-backgroundColor/50 rounded-lg p-6">
+                <h3 className="mb-2 text-xl font-semibold">
+                  한국장학재단 사회리더대학생멘토링 12기 수료
+                </h3>
+                <p className="mb-3">2022.05 - 2022.11</p>
+                <ul className="list-disc pl-5">
+                  <li>
+                    한국장학재단 사회리더대학생멘토링 IT 분야 멘토링 참여로
+                    글로벌 리더 및 좋은 개발자가 되기 위한 지식과 마인드 함양
+                    경험
+                  </li>
+                  <li>멘티 대표 팀장을 역임하여 일정 및 프로젝트 관리 경험</li>
                 </ul>
               </div>
             </div>
@@ -166,6 +230,13 @@ export default function AboutPage() {
                     'Jest',
                     'Cypress',
                     'Recoil',
+                    'Zustand',
+                    'Tanstack Query',
+                    'Tanstack Table',
+                    'React Hook Form',
+                    'CytoScrape',
+                    'ApexCharts',
+                    'Plotly.js',
                   ].map((tech) => (
                     <Tag key={tech} tag={tech} />
                   ))}
@@ -183,6 +254,10 @@ export default function AboutPage() {
                     'DynamoDB',
                     'AWS',
                     'Vercel',
+                    'AWS Lambda',
+                    'AWS S3',
+                    'AWS CloudFront',
+                    'AWS SNS',
                   ].map((tech) => (
                     <Tag key={tech} tag={tech} />
                   ))}
