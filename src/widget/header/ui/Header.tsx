@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { CircleIcon, Moon, Sun } from 'lucide-react'
+import { Moon, Sun } from 'lucide-react'
 import { HEADER_TAB_LIST } from '../config/HeaderList'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/src/_app/providers/ThemeContext'
@@ -15,9 +15,10 @@ export function Header() {
       <div className="flex h-16 w-full items-center justify-between space-x-4 sm:justify-between sm:space-x-0">
         <div className="flex items-center space-x-4">
           <Link href="/" className="ml-5 flex items-center space-x-2">
-            <CircleIcon className="h-6 w-6 text-gray-400" />
-            <div className="ml-1 text-gray-400">
-              <p>Fanta Jin</p>
+            <div className="ml-1 text-lg font-bold">
+              <p>
+                <span className="text-blue-800">F</span>anta Jin
+              </p>
             </div>
           </Link>
         </div>
@@ -26,10 +27,8 @@ export function Header() {
             <Link
               href={header.href}
               key={header.id}
-              className={`hover:text-hoverColor text-sm font-medium transition-colors ${
-                pathname === header.href
-                  ? 'text-textColor border-b-2'
-                  : 'text-gray-400'
+              className={`hover:text-hoverColor text-body font-medium transition-colors ${
+                pathname === header.href ? 'text-textColor border-b-3' : ''
               }`}
             >
               {header.title}

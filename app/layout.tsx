@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: 'Fantajin Blog',
+  title: 'Fanta Jin 블로그',
   description: 'Fantajin의 개발 블로그입니다.',
 }
 
