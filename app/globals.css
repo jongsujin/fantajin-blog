@@ -37,7 +37,7 @@ body[data-theme='light'] .postcard-border {
 }
 
 body[data-theme='light'] .tag-border {
-  border : none !important;
+  border: none !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -46,7 +46,6 @@ body[data-theme='dark'] {
   background: #171717;
   color: #ededed;
   font-family: 'Pretendard Variable', sans-serif;
-  
 }
 
 body[data-theme='dark'] .postcard-border {
@@ -80,17 +79,34 @@ body[data-theme='dark'] .tag-border {
   margin-right: 0.5rem;
 }
 
-/* 코드 블록 스타일링 */
-:not(pre) > code {
-
-  background: var(--hljs-bg);
-  color: var(--hljs-color);
-  padding: 0.2rem 0.4rem;
-  border-radius: 0.25rem;
-  font-family: var(--font-geist-mono);
+/* 마크다운 제목 스타일링 개선 */
+.prose h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
-/* 코드 블록 컨테이너만 스타일링 (내부 코드는 highlight.js에 맡김) */
+.prose h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-top: 1.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.prose h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* 코드 블록 스타일링 개선 */
+.prose code {
+  font-family: var(--font-geist-mono);
+  font-size: 0.9rem;
+}
+
 .prose pre {
   background-color: var(--hljs-bg);
   border-radius: 0.5rem;
@@ -99,13 +115,21 @@ body[data-theme='dark'] .tag-border {
   overflow-x: auto;
 }
 
-/* 코드 블록 내부 코드는 highlight.js가 처리하도록 함 */
-.prose pre code {
-  background-color: transparent !important;
-  padding: 0 !important;
-  color: inherit;
+/* 인라인 코드 스타일링 개선 */
+.prose :not(pre) > code {
+  background: var(--hljs-bg);
+  color: var(--hljs-color);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-size: 0.9rem;
 }
 
+/* 문단 스타일링 개선 */
+.prose p {
+  margin: 1rem 0;
+  line-height: 1.75;
+  font-size: 1.1rem;
+}
 
 /* 체크박스 스타일링 */
 input[type='checkbox'] {
