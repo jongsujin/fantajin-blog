@@ -1,0 +1,228 @@
+---
+title: 'React 톺아보기 5편 - 메모이제이션'
+date: '2025-05-06'
+description: 'React 톺아보기 시리즈로 메모이제이션에 대해 알아보고자 합니다.'
+tags: ['개발', 'React']
+thumbnail: '/images/2025/3/ReactThumbnail.png'
+---
+
+### 1. 도입부
+
+이전 포스트에서는 React의 재조정(reconciliation) 과정을 통해 가상 DOM이 어떻게 업데이트되고 실제 DOM에 반영되는지 살펴보았습니다.
+
+이번 포스트에서는 React 개발자들이 실제로 많이 사용하는 대표적인 패턴과 성능 최적화 방법에 대해 알아보려고 합니다.
+
+앞서 말했듯이, React는 직접 DOM을 조작하는 횟수를 최소화하고 렌더링 과정을 효율적으로 만들기 위해 고안되었지만, 그럼에도 불구하고 불필요한 리렌더링이 발생할 수밖에 없는 상황들이 존재합니다.
+
+React는 이러한 문제를 해결하기 위한 수단으로 **메모이제이션(Memoization)**이라는 기법을 제공합니다.
+이번 포스트에서는 이 메모이제이션이 React에서 어떻게 활용되고 성능 최적화에 기여하는지 자세히 다뤄보겠습니다.
+
+### 2. 메모이제이션이란?
+
+**메모이제이션(Memoization)**이란 자주 사용되는 계산이나 함수 호출의 결과를 기억(memo)하고 있다가, 같은 입력이 들어왔을 때 저장된 결과를 즉시 반호나하여 불필요한 계산을 주이는 기법을 말합니다.
+즉, 쉽게 말하자면 컴퓨터 과학에서 이전에 계산된 결과를 캐싱해서 함수의 성능을 최적화하는 기법이라고 할 수 있습니다.
+
+이렇게 된다면 입력을 기준으로 함수의 출력을 저장해 두었다가 같은 입력을 사용해 다시 함수를 호출하면 출력을 다시 계산하지 않고 캐시된 결과를 반환하여 보여주어 계산 비용을 줄이고 성능 최적화를 도모할 수 있습니다.
+
+React는 컴포넌트의 불필요한 리렌더링을 방지하고 성능을 최적화하는 목적으로 활용됩니다.
+
+지금부터 React가 대표적으로 활용하는 메모이제이션 방법에 대해 알아보겠습니다.
+
+### 3. React.memo를 사용한 메모화
+
+`React.memo`는 **컴포넌트의 props가 변경되지 않았다면, 다시 렌더링하지 않고 이전 렌더링된 결과를 재사용**하는 고차 컴포넌트입니다.
+
+일반적인 컴포넌트는 상위 컴포넌트가 리렌더링될 때마다 props 변경 여부와 관계 없이 매번 렌더링됩니다.
+이 과정에서 불필요한 렌더링이 자주 발생할 수 있는데, 이를 방지해주는 것이 `React.memo` 입니다.
+
+사용 방법은 그렇게 어렵지 않습니다. 아래처럼 함수 컴포넌트를 `React.memo`로 감싸주면, props가 이전과 같다면 리렌더링을 생략합니다.
+
+(**렌더링**이란 함수를 다시 호출한다는 의미입니다.)
+
+```jsx
+const MyComponent = React.memo(({ name, age }) => {
+  return (
+    <div>
+      {name} {age}
+    </div>
+  )
+})
+
+export default MyComponent
+```
+
+`React.memo`은 렌더링 측면에서 굉장히 중요한 역할을 합니다. 아래 사례를 예시로 살펴보겠습니다.
+
+```jsx
+// React.memo를 사용하지 않은 경우
+import { useState } from 'react'
+
+function ChildComponent({ name }) {
+  console.log('ChildComponent 렌더링!')
+  return <div>자식 이름: {name}</div>
+}
+
+function ParentComponent() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>부모 상태 업데이트</button>
+      <ChildComponent name="홍길동" />
+    </>
+  )
+}
+```
+
+위 코드에서는 부모 상태(`count`)가 업데이트 될 때마다 자식 컴포넌트가 매번 렌더링 됩니다. 자식 컴포넌트의 props는 바뀌지 않았음에도 말입니다.
+이러한 경우 꽤 비효율적인 코드가 될 수 있습니다.
+
+이러한 문제를 해결하기 위해 `React.memo`를 사용할 수 있습니다.
+
+```jsx
+// React.memo를 사용한 경우
+import { useState, memo } from 'react'
+
+const ChildComponent = memo(({ name }) => {
+  console.log('ChildComponent 렌더링!')
+  return <div>자식 이름: {name}</div>
+})
+
+function ParentComponent() {
+  const [count, setCount] = useState(0)
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>부모 상태 업데이트</button>
+      <ChildComponent name="홍길동" />
+    </>
+  )
+}
+```
+
+위 코드에서는 `React.memo`를 사용하여 자식 컴포넌트가 불필요하게 렌더링되는 것을 방지합니다.
+이렇게 되면 부모 컴포넌트의 상태가 변하더라도, 자식 컴포넌트는 props(`name`)가 변경되지 않는 한 렌더링하지 않습니다.
+
+### 4. React.memo 사용 시 주의사항
+
+`React.memo`는 props에 **얕은 비교**를 수행해 props의 변경 여부를 확인합니다.
+이 때 문제는 자바스크립트에서 **스칼라 타입(원시 타입)**은 정확하게 비교가 가능하지만, 스칼라가 아닌 타입은 그렇지 않다는 점입니다.
+
+즉, **참조 타입**은 데이터 자체가 아니라 데이터가 메모리에 저장된 위치에 대한 참조 또는 포인터를 저장합니다.
+그래서 내용은 같지만 메모리 위치가 다른 두 배열 혹은 객체를 비교할 때 의도치 않는 결과를 갖고 올 수도 있는 문제가 발생하는데 이 문제 때문에
+`React.memo`를 사용하기 까다로울 수 있습니다. 되려 성능 감소를 유발하기도 합니다.
+
+아래 예시를 보면 이해하시기 쉬울겁니다.
+
+```jsx
+import { useState, memo } from 'react'
+
+const Child = memo(({ obj }) => {
+  console.log('Child 렌더링!')
+  return <div>{obj.text}</div>
+})
+
+function Parent() {
+  const [count, setCount] = useState(0)
+
+  const obj = { text: 'Hello' }
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Update Parent</button>
+      <Child obj={obj} />
+    </>
+  )
+}
+```
+
+위 코드에서는 부모 컴포넌트가 렌더링 될 때마다 `Child`는 항상 렌더링됩니다.
+`obj`는 매 렌더링마다 새로 생성되므로(메모리 주소가 다름), React.memo는 **props가 달라졌다.**고 판단하여 React.memo의 캐시 기능을 무시하고 렌더링합니다.
+
+이러한 문제를 해결하기 위해서는 참조 타입의 경우에는 `useMemo`를 사용해 객체를 메모이제이션 하는 것이 효과적입니다.
+
+```jsx
+import { useState, useMemo, memo } from 'react'
+
+const Child = memo(({ obj }) => {
+  console.log('Child 렌더링!')
+  return <div>{obj.text}</div>
+})
+
+function Parent() {
+  const [count, setCount] = useState(0)
+
+  const obj = useMemo(() => ({ text: 'Hello' }), [])
+
+  return (
+    <>
+      <button onClick={() => setCount(count + 1)}>Update Parent</button>
+      <Child obj={obj} />
+    </>
+  )
+}
+```
+
+이제는 `count`가 변경되어 부모가 리렌더링되어도, `obj`는 메모이제이션 되어 재사용됩니다.
+따라서 `child`는 props가 동일하므로 리렌더링되지 않습니다.
+
+### 5. useMemo란?
+
+`useMemo`는 메모이제이션을 위한 훅으로, 렌더링 중에 비용이 많이 드는 연산을 캐싱하여 성능을 최적화합니다.
+위처럼 스칼라타입이 아닌 참조 타입 같은 경우를 메모이제이션 할 때 사용됩니다.
+예시는 위에 적었으니 가볍게 넘어가보도록 하겠습니다.
+
+### 6. useCallback이란?
+
+그렇다면 값을 넘기는 것이 아닌 함수를 넘겨야하는 경우에는 어떻게 해야할까요?
+
+예를 들어 부모 컴포넌트에서 함수를 선언하면, 부모가 리렌더링될 때마다 그 함수는 **항상 새롭게 생성된 새로운 함수**가 됩니다.
+이렇게 새로 생성된 함수는 자식 컴포넌트에 전달 될 때 React.memo가 있어도 props가 변경된 것으로 인식되어 자식 컴포넌트는 다시 렌더링 됩니다.
+이러한 문제를 해결하기 위한 것이 `useCallback` 입니다.
+
+### 7. useMemo와 useCallback의 차이점
+
+`useCallback`은 `useMemo`와 비슷한 역할을 하지만 값 대신 **함수**를 메모이제이션합니다.
+즉, 부모가 리렌더링되더라도 특정 의존성 값이 변하지 않는 한 **같은 함수를 재사용**하게 됩니다.
+그래서 `React.memo`와 함께 사용하면 불필요한 자식컴포넌트의 렌더링을 방지할 수 있습니다.
+
+```jsx
+import { useState, memo, useCallback } from 'react'
+
+const Child = memo(({ onClick }) => {
+  console.log('Child 렌더링')
+  return <button onClick={onClick}>자식 버튼</button>
+})
+
+function Parent() {
+  const [count, setCount] = useState(0)
+  const [text, setText] = useState('')
+
+  // 부모 리렌더링 시마다 이 함수는 새로 만들어진다 → Child는 매번 리렌더링됨
+  const handleClick = useCallback(() => {
+    setCount((prev) => prev + 1)
+  }, [])
+
+  return (
+    <>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <Child onClick={handleClick} />
+    </>
+  )
+}
+```
+
+위 코드에서는 text를 입력할 때마다 부모는 리렌더링되지만 `useCallback` 덕분에 `handleClick`은 새로 생성되지 않고 동일한 참조를 유지하여 자식 컴포넌트의 리렌더링을 방지합니다.
+
+### 8. 결론
+
+이번 포스트에서는 React의 메모이제이션 기능인 `React.memo`, `useMemo`, `useCallback`에 대해 알아보았습니다.
+
+셋 다 메모이제이션 즉, 불필요한 리렌더링을 방지하기 위한 방법이지만 각각의 용도는 매우 다릅니다.
+
+`React.memo`는 전체 컴포넌트를 메모화해 렌더링이 다시 발생하지 않게 합니다.
+`useMemo`는 컴포넌트 내부의 특정 계산 혹은 값을 메모화해 비용이 많이 드는 재계산을 피합니다.
+`useCallback`은 값이 아닌 함수를 재사용하여 불필요한 렌더링을 방지합니다.
+
+위 세 개를 사용하고 있었고 개념도 얼추 알고 있었지만 실제로 이렇게 자세히 알아보니 메모이제이션 전략도 굉장히 중요함을 알 수 있었습니다.
+실무에서 사용할 때 많은 도움이 될 것 같습니다. 다음 포스트도 유익한 내용으로 찾아오도록 하겠습니다. 감사합니다.
