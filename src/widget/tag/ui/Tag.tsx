@@ -1,6 +1,4 @@
-interface TagProps {
-  tag: string
-}
+import { TagProps } from '@/src/entities/post/model/types'
 
 export function Tag({ tag }: TagProps) {
   return (

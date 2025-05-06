@@ -1,12 +1,7 @@
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
-import { Post } from '@/src/entities/post/model/types'
+import { TagItemProps } from '@/src/entities/post/model/types'
 import Link from 'next/link'
-
-interface TagItemProps {
-  posts: Post[]
-  tag: string
-}
 
 export default function TagItem({ posts, tag }: TagItemProps) {
   const filteredPosts = posts.filter((post) => post.tags.includes(tag))

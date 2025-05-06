@@ -2,16 +2,12 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import { Post } from '@/src/entities/post/model/types'
+import { PostDetailProps } from '@/src/entities/post/model/types'
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { Calendar } from 'lucide-react'
 import { Tag } from '../../tag/ui/Tag'
 
-interface PostCardProps {
-  post: Post
-}
-
-export function PostCard({ post }: PostCardProps) {
+export function PostCard({ post }: PostDetailProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <Card className="group bg-cardColor/90 postcard-border h-full shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl dark:border">

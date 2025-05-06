@@ -1,15 +1,6 @@
-import { ReactNode } from 'react'
+import { CategoryProps } from '../../post/model/types'
 
-export interface Category {
-  id: string
-  title: string
-  description: string
-  icon: ReactNode
-  href: string
-  color: string
-}
-
-export const categories: Category[] = [
+export const categories: CategoryProps[] = [
   {
     id: 'about',
     title: '내 소개',

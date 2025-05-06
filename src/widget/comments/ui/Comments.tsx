@@ -1,11 +1,8 @@
 'use client'
 
 import { useTheme } from '@/src/_app/providers/ThemeContext'
+import { CommentsProps } from '@/src/entities/post/model/types'
 import React, { useEffect, useRef } from 'react'
-
-interface CommentsProps {
-  slug: string
-}
 
 export function Comments({ slug }: CommentsProps) {
   const commentsRef = useRef<HTMLDivElement>(null)

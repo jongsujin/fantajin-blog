@@ -1,14 +1,8 @@
 'use client'
 
 import { useState } from 'react'
-import { Post } from '@/src/entities/post/model/types'
+import { PaginationProps } from '@/src/entities/post/model/types'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
-
-interface PaginationProps {
-  posts: Post[]
-  tag: string
-  itemsPerPage?: number
-}
 
 export default function Pagination({
   posts,

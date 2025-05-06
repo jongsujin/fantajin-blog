@@ -1,11 +1,7 @@
 import Link from 'next/link'
-import { Post } from '@/src/entities/post/model/types'
+import { BlogPageProps } from '@/src/entities/post/model/types'
 import CategoryBox from '@/src/entities/category/ui/CategoryBox'
 import { PostCard } from '@/src/widget/post-card/ui/PostCard'
-
-interface BlogPageProps {
-  posts: Post[]
-}
 
 export default function BlogPage({ posts }: BlogPageProps) {
   const encodedTag = encodeURIComponent('개발')

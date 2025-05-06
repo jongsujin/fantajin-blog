@@ -1,12 +1,7 @@
 import { getAllPosts } from '@/src/entities/post/api/post'
+import { TagPageProps } from '@/src/entities/post/model/types'
 import TagList from '@/src/screens/tag/TagList'
 import { notFound } from 'next/navigation'
-
-interface TagPageProps {
-  params: {
-    tag: string
-  }
-}
 
 export default async function TagPage({ params }: TagPageProps) {
   const { tag } = params

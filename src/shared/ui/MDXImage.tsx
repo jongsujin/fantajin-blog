@@ -1,12 +1,6 @@
+import { MDXImageProps } from '@/src/entities/post/model/types'
 import Image from 'next/image'
 import { useState } from 'react'
-
-interface MDXImageProps {
-  src: string
-  alt: string
-  width?: number
-  height?: number
-}
 
 export function MDXImage({ src, alt, width, height }: MDXImageProps) {
   const [isLoading, setIsLoading] = useState(true)

@@ -1,9 +1,5 @@
+import { CardProps } from '@/src/entities/post/model/types'
 import React from 'react'
-
-export interface CardProps {
-  className?: string
-  children: React.ReactNode
-}
 
 export function Card({ className = '', children }: CardProps) {
   return (

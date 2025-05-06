@@ -1,13 +1,8 @@
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import Link from 'next/link'
 import { Tag } from '@/src/widget/tag/ui/Tag'
-import { Post } from '@/src/entities/post/model/types'
+import { TagListProps } from '@/src/entities/post/model/types'
 import Pagination from '@/src/shared/ui/Pagination'
-
-interface TagListProps {
-  posts: Post[]
-  tag?: string
-}
 
 export default function TagList({ posts, tag }: TagListProps) {
   // 모든 포스트에서 태그 추출
