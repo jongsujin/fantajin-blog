@@ -31,6 +31,12 @@ body[data-theme='light'] {
   color: #171717;
   font-family: 'Pretendard Variable', sans-serif;
   --hljs-bg: #f6f8fa;
+
+  /* 페이지네이션 라이트 모드 스타일 */
+  --pagination-border: #e5e7eb;
+  --pagination-hover: #f3f4f6;
+  --pagination-active-bg: #374151;
+  --pagination-active-text: #ffffff;
 }
 body[data-theme='light'] .postcard-border {
   border: none !important;
@@ -46,6 +52,12 @@ body[data-theme='dark'] {
   background: #171717;
   color: #ededed;
   font-family: 'Pretendard Variable', sans-serif;
+
+  /* 페이지네이션 다크 모드 스타일 */
+  --pagination-border: #374151;
+  --pagination-hover: #1f2937;
+  --pagination-active-bg: #374151;
+  --pagination-active-text: #ffffff;
 }
 
 body[data-theme='dark'] .postcard-border {
@@ -56,6 +68,47 @@ body[data-theme='dark'] .postcard-border {
 body[data-theme='dark'] .tag-border {
   border: 3px solid #374151 !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 페이지네이션 스타일 */
+.pagination-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid var(--pagination-border);
+  background: transparent;
+  color: currentColor;
+  transition: all 0.2s ease;
+}
+
+.pagination-button:hover:not(:disabled) {
+  background-color: var(--pagination-hover);
+}
+
+.pagination-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 9999px;
+  border: 1px solid var(--pagination-border);
+  background: transparent;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pagination-number:hover {
+  background-color: var(--pagination-hover);
+}
+
+.pagination-active {
+  background-color: var(--pagination-active-bg);
+  color: var(--pagination-active-text);
+  border-color: var(--pagination-active-bg);
 }
 
 /* 마크다운 목록 스타일링 */

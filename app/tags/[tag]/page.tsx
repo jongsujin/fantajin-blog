@@ -1,29 +1,26 @@
 import { getAllPosts } from '@/src/entities/post/api/post'
-import TagItem from '@/src/screens/tag/TagItem'
+import TagList from '@/src/screens/tag/TagList'
 import { notFound } from 'next/navigation'
 
-interface TagPostsPageProps {
-  params: Promise<{ tag: string }>
+interface TagPageProps {
+  params: {
+    tag: string
+  }
 }
 
-export default async function TagPostsPage({ params }: TagPostsPageProps) {
-  const resolvedParams = await params
-
-  if (!resolvedParams || !resolvedParams.tag) {
-    notFound()
-  }
-
-  const allPosts = await getAllPosts()
-  const tag = decodeURIComponent(resolvedParams.tag)
+export default async function TagPage({ params }: TagPageProps) {
+  const { tag } = params
+  const decodedTag = decodeURIComponent(tag)
+  const posts = await getAllPosts()
 
   // 태그에 해당하는 게시물이 있는지 확인
-  const hasTaggedPosts = allPosts.some((post) => post.tags.includes(tag))
+  const hasTaggedPosts = posts.some((post) => post.tags.includes(decodedTag))
 
   if (!hasTaggedPosts) {
     notFound()
   }
 
-  return <TagItem tag={tag} posts={allPosts} />
+  return <TagList posts={posts} tag={decodedTag} />
 }
 
 // 정적 경로 생성을 위한 함수
