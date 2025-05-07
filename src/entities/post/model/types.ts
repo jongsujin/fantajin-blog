@@ -60,9 +60,9 @@ export interface BlogPageProps {
 }
 
 export interface TagPageProps {
-  params: {
+  params: Promise<{
     tag: string
-  }
+  }>
 }
 
 export interface PostPageProps {

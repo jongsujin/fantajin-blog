@@ -4,7 +4,7 @@ import TagList from '@/src/screens/tag/TagList'
 import { notFound } from 'next/navigation'
 
 export default async function TagPage({ params }: TagPageProps) {
-  const { tag } = params
+  const { tag } = await params
   const decodedTag = decodeURIComponent(tag)
   const posts = await getAllPosts()
 
