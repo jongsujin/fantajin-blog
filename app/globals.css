@@ -212,3 +212,25 @@ input[type='checkbox']:checked::before {
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
+/* 강조(bold) 텍스트 스타일링 */
+.prose strong {
+  font-weight: 700;
+  color: #0284c7; /* 라이트 블루 색상 */
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(2, 132, 199, 0.2) 40%
+  );
+  padding: 0 0.2rem;
+}
+
+/* 다크 모드에서 강조 텍스트 스타일링 */
+body[data-theme='dark'] .prose strong {
+  color: #38bdf8; /* 다크 모드에서는 더 밝은 블루 */
+  background: linear-gradient(
+    to bottom,
+    transparent 60%,
+    rgba(56, 189, 248, 0.2) 40%
+  );
+}
