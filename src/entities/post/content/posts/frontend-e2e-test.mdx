@@ -1,0 +1,146 @@
+---
+title: '프론트엔드 e2e 테스트 도입기 - Cypress'
+date: '2025-05-11'
+description: '사내 프로젝트에서 e2e 테스트를 도입한 과정을 공유합니다.'
+tags: ['개발']
+thumbnail: '/images/2025/6/TestingThumbnail.png'
+---
+
+### 1. e2e 테스트를 도입한 이유
+
+사실 회사 내 프로젝트 중 저 혼자 프론트엔드를 담당한 프로젝트는 어지간하면 피드백이나 기능 수정 요청이 들어왔을 때 저 혼자 코드를 보고 수정할 수 있었습니다.
+또한 곧 리뉴얼을 앞두고 있었기에 프론트엔드 코드가 많이 바뀔 것이라 생각했고 그래서 그 핑계로 테스트코드 도입도 미루었던 것도 있었습니다..
+
+근데 이렇게 나 혼자 담당하는 상황이 정말 흔할까라는 생각이 들었고 또 그럴수록 더더욱 테스트코드를 도입하는 것이 중요하다는 생각이 들었습니다.
+늘 그렇듯 과거의 나를 질책하며 코드를 봐도 왜 이렇게 짰을까 하며 헤매는 경우와 또 요청 사항을 수정했을 때 다른 부분에서 문제가 생겨 코드를 수정하고 또 문제를 만드는 경우가 생겨 테스트코드를 만들어야겠다는 필요성을 느꼈습니다.
+
+그래서 비록 새로운 프로젝트때문에 도중에 멈췄지만 **Cypress**를 도입했고 결론적으로 새로운 프로젝트에서 `playwright`를 도입하기로 했기 때문에 이것도 마이그레이션 해야겠지만
+**Cypress**로 테스트코드를 작성했던 경험을 공유하고자 합니다.
+
+### 2. Cypress 선택 이유
+
+**Cypress**를 도입했을 때가 작년 6월이었는데 그때는 **Cypress**가가 보편적으로 쓰이고 있었고, 그 당시 굉장히 테스트코드에 관심을 가졌고 인프런 강의까지 구매해서 들었던 기억이 납니다.
+그 때 배운 테스트 툴 중 하나가 **Cypress**였고 UI가 깔끔한 것도 마음에 들었고 직접 강의로 배운 것을 실무에 적용해보고 싶은 생각으로 **Cypress**를 선택하게 되었습니다.
+
+### 3. Cypress 설정 방법
+
+#### 3.1 설치
+
+먼저 프로젝트 폴더에서 아래 명령어를 입력해서 설치해줍니다.
+
+```bash
+npm install cypress --save-dev
+```
+
+#### 3.2 package.json 설정
+
+설치가 끝났으면 `package.json` 파일에 아래 명령어를 추가해줍니다.
+
+```bash
+ "scripts": {
+    "cypress": "npx cypress open"
+  }
+```
+
+#### 3.3 명령어 실행
+
+터미널에서 아래 명령어를 작성하면 프로그램 화면이 켜집니다.
+
+```bash
+npm run cypress
+```
+
+#### 3.4 실행 화면
+
+![image](/images/2025/10/CypressScreenShot.png)
+
+E2E Testing을 선택하고 원하는 브라우저를 선택 후 start를 클릭하면 아래와 같은 화면이 뜹니다. 저는 이미 테스트 코드를 작성했기 때문에 옆에 테스트 리스트들이 있지만 처음엔 빈 화면이 뜰 것입니다.
+
+![image](/images/2025/10/CypressTestList.png)
+
+### 4. cypress.config.ts 설정
+
+다시 코드를 돌아가시면 프로젝트 폴더에 `cypress.config.ts` 파일과 전역 디렉토리로 `cypress` 폴더가 생성된 것을 확인할 수 있습니다.
+그리고 cypress 폴더 내부에 e2e 폴더를 만들어서 각각의 테스트 케이스들을 지정해서 만들어주면 됩니다.
+
+저는 순서대로 1-signin 등 각각의 폴더를 만들어주었고 또한 e2e 폴더 외 로그인할 때 사용할 토큰이나 목데이터를 저장한 json 파일을 `fixtures` 폴더에 넣어주었습니다.
+
+```typescript
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { defineConfig } from 'cypress'
+
+export default defineConfig({
+  e2e: {
+    baseUrl: 'http://localhost:5173',
+    setupNodeEvents(_on, _config) {
+      // implement node event listeners here
+    },
+  },
+})
+```
+
+![image](/images/2025/10/CypressFolder.png)
+
+### 5. 테스트 코드 작성
+
+그 후 아래처럼 테스트코드를 작성한 후 실행하면 됩니다.
+저는 given, when, then 패턴으로 테스트코드를 작성했습니다.
+
+- given : 준비 단계로 테스트에 필요한 초기 상태를 설정하는 단계입니다. 예를 들어 필요한 객체를 생성하거나, Mock 객체를 설정하는 등의 작업을 수행합니다.
+- when : 실행 단계로 테스트 대상이 되는 동작을 실행하는 단계입니다.
+- then : 검증 단계로 테스트 결과와 기대값을 비교하여 테스트 성공 여부를 확인합니다.
+
+```typescript
+describe('로그인 화면', () => {
+  const backendUrl = 'https://api.test.com'
+  it('사용자는 로그인 페이지에 접근 후 로그인한다.', () => {
+    // given - 로그인에 접근
+    cy.visit('/signin')
+
+    cy.get('[data-cy=signInUserName]').as('userNameInput')
+    cy.get('[data-cy=signInUserPassword]').as('userPasswordInput')
+
+    // when - 입력 필드 선택
+    cy.get('@userNameInput').type('test1')
+    cy.get('@userPasswordInput').type('password')
+
+    cy.get('@userNameInput').invoke('val').should('eq', 'test1')
+    cy.get('@userPasswordInput').invoke('val').should('eq', 'password')
+
+    cy.intercept(
+      {
+        method: 'POST',
+        url: `${backendUrl}/user/token`,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      },
+      (req) => {
+        req.reply({
+          statusCode: 200,
+          fixture: 'signin.json',
+        })
+      },
+    ).as('signIn')
+
+    cy.get('[data-cy=signIn]').should('exist').click()
+
+    // then
+    cy.url().should('include', '/')
+  })
+  it('사용자는 계정이 없을 시 회원가입 페이지로 간다.', () => {
+    cy.visit('/signin')
+    cy.get('[data-cy=signUp]').should('exist').click()
+    cy.url().should('include', '/signup')
+  })
+})
+```
+
+### 6. 결론
+
+결과적으로는 playwright로 마이그레이션 하기로 결심했지만 이전에 작업했던 부분들을 복기하면서 이 때 겪었던 시행착오를 겪지 않기 위한 이유로 작성해보았습니다.
+
+특히 이 당시에는 CI/CD 과정에 반영하지 못했는데 이제 playwright로 마이그레이션 하고 나면 CI/CD에도 반영하고 또 mcp 서버도 사용해보고 싶습니다.
+
+모처럼 재밌는 작업이 될 것 같아서 빠른 시일 내 playwright 도입기를 올려보도록 하겠습니다.
+읽어주셔서 감사합니다.
