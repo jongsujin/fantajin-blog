@@ -48,8 +48,9 @@ export default function AboutPage() {
 
               <div className="flex h-full gap-4">
                 <Link
-                  href="https://github.com/fanta-jin"
+                  href="https://github.com/jongsujin"
                   className="hover:text-hoverColor transition-colors"
+                  target="_blank"
                 >
                   <Image
                     src="/logo/github.svg"
@@ -61,6 +62,7 @@ export default function AboutPage() {
                 <Link
                   href="https://www.linkedin.com/in/%EC%A2%85%EC%88%98-%EC%A7%84-723550332/?trk=opento_sprofile_goalscard"
                   className="hover:text-hoverColor transition-colors"
+                  target="_blank"
                 >
                   <Image
                     src="/logo/linkedin.svg"
@@ -72,6 +74,7 @@ export default function AboutPage() {
                 <Link
                   href="mailto:jjs9836@naver.com"
                   className="hover:text-hoverColor transition-colors"
+                  target="_blank"
                 >
                   <Image
                     src="/logo/mail.svg"
