@@ -1,5 +1,5 @@
 ---
-title: '블로그 제작 후기'
+title: 'PWA 앱 구현 방법'
 date: '2025-07-17'
 description: 'Next.js를 PWA 앱 형식으로 변환한 과정을 공유합니다.'
 tags: ['개발', 'Next.js', 'TypeScript']
@@ -103,12 +103,18 @@ PWA가 기기에 설치될 때의 동작과 표시 방식을 정의하는 JSON �
 
 먼저 Vercel에서도 가이드를 직접 제공하고 있습니다. 푸시 알림을 예시로 구현 가이드를 제공합니다.
 
-<a href="https://nextjs.org/docs/app/guides/progressive-web-apps" target="_blank" rel="noopener noreferrer">
+<a
+  href="https://nextjs.org/docs/app/guides/progressive-web-apps"
+  target="_blank"
+  rel="noopener noreferrer"
+>
+  Next.js PWA 공식 가이드
+</a>
 
 혹은 간단하게 `next-pwa` 등을 통해 서비스워커 캐싱 처리 등을 손쉽게 구현할 수 있습니다.
 그러나 `next-pwa`는 유지보수가 중단된 상태이므로 대안인 `@serwist/next`를 사용하여 구현해보겠습니다.
 
-공식 @serwist/next 링크 : <a href="https://serwist.pages.dev/docs/next/getting-started" target="_blank" rel="noopener noreferrer">
+공식 @serwist/next 링크 : <a href="https://serwist.pages.dev/docs/next/getting-started" target="_blank" rel="noopener noreferrer">Serwist 공식 문서</a>
 
 ### 5.1 설치
 
@@ -231,7 +237,7 @@ PWA 앱의 정보를 적는 manifest 파일을 생성해줍니다.
 ### 5.6 메타데이터 설정
 
 마지막으로 메타 데이터를 설정해줍니다. `app/layout.tsx`에 아래와 같이 메타데이터 및 형식을 정의해줍니다.
-이전 버전에서는 <head> 태그 안에 `themeColor`를 넣는 경우도 있었으나 지금은 `Viewport` 타입을 선언해서 그 변수에 선언해주는 것을 권장하고 있습니다.
+이전 버전에서는 `<head>` 태그 안에 `themeColor`를 넣는 경우도 있었으나 지금은 `Viewport` 타입을 선언해서 그 변수에 선언해주는 것을 권장하고 있습니다.
 
 ```tsx
 // app/layout.tsx
