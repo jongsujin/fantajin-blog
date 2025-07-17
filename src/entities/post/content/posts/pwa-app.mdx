@@ -1,0 +1,304 @@
+---
+title: '블로그 제작 후기'
+date: '2025-07-17'
+description: 'Next.js를 PWA 앱 형식으로 변환한 과정을 공유합니다.'
+tags: ['개발', 'Next.js', 'TypeScript']
+thumbnail: '/images/2025/12/pwa.png'
+---
+
+사내 Next.js 기반의 웹앱을 PWA 앱으로 제작한 경험을 공유하고자 합니다.
+PWA와 관련 개념 그리고 적용한 이유 등을 살펴보도록 하겠습니다.
+
+## 1. PWA 제작 이유
+
+처음부터 모바일퍼스트 화면으로 구현하였고 PWA를 염두에 두고 만들었습니다.
+그러나 아예 앱으로 감싸서 스토어에 출시해서 정말 네이티브앱 처럼 만들어달라는 요구사항이 있었고
+추후 포스팅 하겠지만 사실 먼저 **Capacitor**를 사용하여 하이브리드앱 형식으로 전환하였습니다.
+
+하지만 지금 서비스에서 가장 큰 목적은 스마트팜 농장의 데이터를 쉽게 파악하고 제대로 활용하고자 하게 하는 것인데 이 때 날씨나 혹은 특정 이슈가 발생했을 때 `PUSH 알림`은 필수였습니다.
+앱으로 빌드 했을 때는 `Push Notification` 등을 통해 구현할 수 있었으나 웹애서 바로 사용하는 유저도 있을 것이라 생각되었기에 웹에서도 이를 구현 해야하는 필요성이 생겼습니다.
+
+이 때 `PWA` 방식이 가장 합리적이라고 생각이 들었고 실제 사이드 프로젝트에서 구현도 해봤었기에 간단하게 적용할 수 있었습니다.
+하지만 이전에 구현 했을 때는 단순히 적용에서 그쳤고 이번에 제대로 관련 개념들을 정리해서 기록으로 남겨두고자 합니다.
+
+PWA라는 개념은 사실 새로운 개념은 아닙니다.
+`Web Worker` 안에 있는 `Service Worker` 등을 통해 웹앱을 앱만큼의 사용자 경험을 선사하겠다는 목적으로 나온 기존부터 꾸준히 발전되어오던 개념입니다.
+
+그렇다면 `PWA`에 대해 먼저 간략히 살펴보도록 하겠습니다.
+
+## 2. PWA(Progressive Web App)
+
+PWA의 정의는 웹과 네이티브 앱의 기능 모두의 이점을 갖도록 수 많은 특정 기술과 표준 패턴을 사용해 개발된 웹앱입니다.
+특히 스토어 설치 없이 모바일 홈 화면에 설치할 수 있고, 오프라인에서도 동작이 가능하기 때문에 캐싱, 푸시 알림 등 활용 용도가 다양합니다.
+
+`Service Worker`와 `Web App Manifest` 를 활용하여 네이티브 앱과 같은 고급 기능들을 웹앱에 추가할 수 있습니다.
+PWA로 만들어진 웹앱은 아래와 같은 특징이 있습니다.
+
+### 2.1 특징
+
+- 모든 브라우저에서 기본적으로 작동하며 최신 기능은 `점진적`으로 적용됩니다.
+- 오프라인 환경에서도 기본적인 기능이 동작합니다.
+- 네이티브앱과 동일한 수준의 사용자 경험을 제공할 수 있습니다.
+- 개발 및 유지보수에 상당히 유리합니다.
+- 네이티브 앱 대비 매우 적은 저장 공간을 사용합니다.
+
+하지만 장점도 분명하지만 단점도 존재합니다.
+
+### 2.2 단점
+
+- 플랫폼 제한 : iOS에서 웹 푸시와 같은 일부 기능에 제한이 있을 수 있습니다.
+- 기술적 제약 : 요즘에는 당연히 해야하지만 그럼에도 localhost 제외 `HTTPS`가 필수로 들어가야만 합니다.
+- 브라우저 저장소 용량의 한계 : 브라우저 스토리지 용량의 한계 때문에 효율적인 캐싱 전략 설계는 필수입니다.
+
+### 2.3 사례
+
+하지만 그럼에도 장점은 명확하고 실제로 많은 서비스에서도 사용되고 있습니다.
+
+`Starkbucks`, `Twitter` , `Slack` 등 이미 대규모 서비스에서 이 PWA 앱의 효용성은 증명되었다고 볼 수 있습니다.
+그렇다면 이를 구현할 때 필요한 핵심 개념은 뭐가 있을까요?
+대표적으로 `Service Worker`를 이야기 할 수 있습니다. 이를 이해하려면 `Web Worker`의 개념부터 살펴 봐야 합니다.
+
+## 3. Web Worker
+
+`Web Worker`란 브라우저 메인 스레드(렌더링/DOM/UI)와 별도로 백그라운드 스레드를 생성해 JS를 실행하는 기술입니다.
+특히 웹앱이 실행되는 메인 스레드에서 분리되어 백그라운드에서 스크립트가 동작할 수 있도록 도와 메인스레드의 UI 페인팅 등 주요 연산이 block 되지 않도록 합니다.
+
+그래서 웹 사이트에서 적절히 `Web Worker`를 사용한다면 스크립트 실행을 `멀티스레드`로 처리할 수 있는 효과를 가질 수 있습니다.
+
+### 2.1 Web Worker의 실행 환경
+
+`Web Worker`도 자바스크립트 실행 환경을 제공하는 런타임 스레드이기 때문에 직접적인 DOM 조작, window 객체 접근 등 일부 기능을 `제외` 하고 스크립트 코드를 실행할 수 있습니다.
+각 Worker와 메인 스레드는 **postMessage()**와 **onmessage** 핸들러를 사용하여 서로 데이터를 전달하고, 특정 동작을 트리깅 할 수 있습니다. 이를 `message passing` 이라고도 합니다.
+
+### 2.2 종류
+
+- Dedicated Worker: 전용 워커라고도 불리며 가장 일반적인 타입입니다.
+- Shared Worker: 서로 다른 윈도우 탭, 아이프레임 등 다른 스크립트 환경이라도 같은 도메인일 경우 활성화된 포트를 통해 서로 통신할 수 있습니다.
+- Service Worker: 웹앱, 브라우저, 네트워크 사이의 `Proxy Server` 로 작동합니다.
+
+## 4. Service Worker
+
+`Service Worker` 란 웹앱의 캐시를 관리하기 위해 웹 브라우저에서 실행되는 스크립트를 말합니다. 앞서 말씀드렸다시피 프록시 서버 역할도 하는데 앱에서 보내는 HTTP 요청을 인터셉트해서 요청에 대한 응답을 반환 혹은 캐싱합니다.
+아래와 같은 기능들을 구현할 수 있습니다.
+
+- 웹 푸시 알림 서비스
+- 백그라운드 동기화 기능
+- 네트워크 인터셉트 및 캐싱
+
+특히 프록시 기능은 Web API (fetch) 외에도 HTML 파일이 참조하는 리소스에도 적용할 수 있습니다.
+`Service Worker`는 아래와 같은 특징을 갖고 있습니다.
+
+- `Service Worker`의 생명 주기는 웹페이지와 별개로 작용함
+- 도메인 당 한 개의 `Service Worker`를 사용할 수 있습니다.
+- 메인 스레드와 별개의 스레드에서 작동합니다.
+- 그렇기 때문에 웹 페이지가 닫히더라도 비활성화되지 않아, 브라우저 창이 닫히더라도 푸시 알림을 받을 수 있습니다.
+- DOM, window 전역 객체를 참조 혹은 접근할 수 없습니다.
+
+위와 같은 `Service Worker`의 기술을 활용하여 **PWA**를 구현할 수 있습니다.
+그렇다면 어떻게 구현해야할까요? Next.js 기준으로 말씀드리겠습니다. 꽤 간단합니다.
+
+PWA가 기기에 설치될 때의 동작과 표시 방식을 정의하는 JSON 파일인 `manifest`와 `Service Worker` 설정만 해주면 됩니다.
+
+## 5. 설치 방법
+
+먼저 Vercel에서도 가이드를 직접 제공하고 있습니다. 푸시 알림을 예시로 구현 가이드를 제공합니다.
+
+<a href="https://nextjs.org/docs/app/guides/progressive-web-apps" target="_blank" rel="noopener noreferrer">
+
+혹은 간단하게 `next-pwa` 등을 통해 서비스워커 캐싱 처리 등을 손쉽게 구현할 수 있습니다.
+그러나 `next-pwa`는 유지보수가 중단된 상태이므로 대안인 `@serwist/next`를 사용하여 구현해보겠습니다.
+
+공식 @serwist/next 링크 : <a href="https://serwist.pages.dev/docs/next/getting-started" target="_blank" rel="noopener noreferrer">
+
+### 5.1 설치
+
+먼저 셋팅을 위해 아래와 같이 설치해줍니다.
+
+```bash
+npm i @serwist/next && npm i -D serwist
+```
+
+### 5.2 Next.config.ts 파일 설정
+
+그 다음 Next.config.ts 파일을 변경해주어야 합니다. 아래와 같은 식으로 구현해주시면 됩니다.
+
+```ts
+const withSerwist = withSerwistInit({
+  swSrc: 'app/sw.ts',
+  swDest: 'public/sw.js',
+})
+
+export default withSerwist(nextConfig)
+```
+
+### 5.3 tsconfig.json 파일 설정
+
+`@serwist/next/typings` 와 같이 타입을 설정해주고 lib과 exclude를 추가해줍니다.
+
+```json
+{
+  // Other stuff...
+  "compilerOptions": {
+    // Other options...
+    "types": [
+      // Other types...
+      // This allows Serwist to type `window.serwist`.
+      "@serwist/next/typings"
+    ],
+    "lib": [
+      // Other libs...
+      // Add this! Doing so adds WebWorker and ServiceWorker types to the global.
+      "webworker"
+    ]
+  },
+  "exclude": ["public/sw.js"]
+}
+```
+
+또한 .gitignore에도 public으로 생성되는 항목들은 GitHub에 올라가지 않도록 추가해줍니다.
+
+```bash
+# Serwist
+public/sw*
+public/swe-worker*
+```
+
+### 5.4 Service Worker 생성
+
+그 후 `Service Worker`를 생성해줍니다.
+아래와 같이 공식문서에 잘 설명되어있으므로 그대로 따라하면 됩니다.
+
+주로 Next.js 기준 app 폴더 최상위 디렉토리에 만들어줍니다.
+
+```ts
+// app/sw.ts
+import { defaultCache } from '@serwist/next/worker'
+import type { PrecacheEntry, SerwistGlobalConfig } from 'serwist'
+import { Serwist } from 'serwist'
+
+// This declares the value of `injectionPoint` to TypeScript.
+// `injectionPoint` is the string that will be replaced by the
+// actual precache manifest. By default, this string is set to
+// `"self.__SW_MANIFEST"`.
+declare global {
+  interface WorkerGlobalScope extends SerwistGlobalConfig {
+    __SW_MANIFEST: (PrecacheEntry | string)[] | undefined
+  }
+}
+
+declare const self: ServiceWorkerGlobalScope
+
+const serwist = new Serwist({
+  precacheEntries: self.__SW_MANIFEST,
+  skipWaiting: true,
+  clientsClaim: true,
+  navigationPreload: true,
+  runtimeCaching: defaultCache,
+})
+
+serwist.addEventListeners()
+```
+
+### 5.5 Manifest 파일 생성
+
+PWA 앱의 정보를 적는 manifest 파일을 생성해줍니다.
+
+```json
+{
+  "name": "My Awesome PWA app",
+  "short_name": "PWA App",
+  "icons": [
+    {
+      "src": "/icons/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#FFFFFF",
+  "background_color": "#FFFFFF",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
+```
+
+### 5.6 메타데이터 설정
+
+마지막으로 메타 데이터를 설정해줍니다. `app/layout.tsx`에 아래와 같이 메타데이터 및 형식을 정의해줍니다.
+이전 버전에서는 <head> 태그 안에 `themeColor`를 넣는 경우도 있었으나 지금은 `Viewport` 타입을 선언해서 그 변수에 선언해주는 것을 권장하고 있습니다.
+
+```tsx
+// app/layout.tsx
+import type { Metadata, Viewport } from 'next'
+import type { ReactNode } from 'react'
+
+const APP_NAME = 'PWA App'
+const APP_DEFAULT_TITLE = 'My Awesome PWA App'
+const APP_TITLE_TEMPLATE = '%s - PWA App'
+const APP_DESCRIPTION = 'Best PWA app in the world!'
+
+export const metadata: Metadata = {
+  applicationName: APP_NAME,
+  title: {
+    default: APP_DEFAULT_TITLE,
+    template: APP_TITLE_TEMPLATE,
+  },
+  description: APP_DESCRIPTION,
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: APP_DEFAULT_TITLE,
+    // startUpImage: [],
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  openGraph: {
+    type: 'website',
+    siteName: APP_NAME,
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+  twitter: {
+    card: 'summary',
+    title: {
+      default: APP_DEFAULT_TITLE,
+      template: APP_TITLE_TEMPLATE,
+    },
+    description: APP_DESCRIPTION,
+  },
+}
+
+export const viewport: Viewport = {
+  themeColor: '#FFFFFF',
+}
+
+export default function RootLayout({ children }: { children: ReactNode }) {
+  return (
+    <html lang="en" dir="ltr">
+      <head />
+      <body>{children}</body>
+    </html>
+  )
+}
+```
+
+## 6. 결론
+
+생각보다 간단히 구현할 수 있고 실제 브라우저 주소 창 옆에 활성화 되어 있는 것을 볼 수 있습니다.
+이렇게 쉽게 웹앱을 앱 형식으로 전환하여 모바일 환경에서도 접근이 용이하게 할 수 있습니다.
+하지만 스토어에 배포하고자 할 때 `PWA Builder` 와 같은 도구들이 있으나 다소 깐깐한 기준으로 평가될 수 있다는 주의사항이 있습니다.
+그럼에도 웹을 앱처럼 사용할 수 있게 하는 이 기술은 정말 매력적인 것 같습니다.
+특히 Cursor도 이번에 모바일 버전을 지원하면서 `PWA` 형식으로 제공하고 있으니 더더욱 지켜볼 만 할 것 같습니다.
+
+다음 게시글은 `Capacitor`로 하이브리드앱 전환한 경험을 공유할 예정입니다.
+감사합니다.
