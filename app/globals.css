@@ -111,6 +111,11 @@ body[data-theme='dark'] .tag-border {
   border-color: var(--pagination-active-bg);
 }
 
+.prose {
+  max-width: none !important;
+  width: 100% !important;
+}
+
 /* 마크다운 목록 스타일링 */
 .prose ol {
   list-style-type: decimal !important;

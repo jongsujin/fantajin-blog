@@ -14,9 +14,9 @@ const components = {
 
 export default function PostDetail({ post }: PostDetailProps) {
   return (
-    <div className="container mx-auto px-4 py-8">
-      <Card className="postcard-border">
-        <CardContent className="prose prose-invert max-w-none">
+    <div className="w-full px-4 py-8">
+      <Card className="postcard-border w-full">
+        <CardContent className="w-full">
           <div className="mb-8">
             <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
             <p className="text-sm text-gray-500">
@@ -33,7 +33,8 @@ export default function PostDetail({ post }: PostDetailProps) {
               ))}
             </div>
           </div>
-          <div>
+
+          <div className="prose prose-invert w-full max-w-none">
             {post.content && (
               <MDXRemote {...post.content} components={components} />
             )}
