@@ -17,6 +17,18 @@ export const metadata: Metadata = {
   description: 'Fantajin의 개발 블로그입니다.',
 }
 
+const themeInitScript = `
+  try {
+    const savedTheme = localStorage.getItem('theme')
+    const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light'
+    document.body.setAttribute('data-theme', savedTheme || systemTheme)
+  } catch (error) {
+    document.body.setAttribute('data-theme', 'light')
+  }
+`
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -31,7 +43,12 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
         />
       </head>
-      <body className={`${geistMono.variable} font-pretendard antialiased`}>
+      <body
+        data-theme="light"
+        suppressHydrationWarning
+        className={`${geistMono.variable} font-pretendard antialiased`}
+      >
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <ThemeProvider>
           <Providers>
             <Header />
