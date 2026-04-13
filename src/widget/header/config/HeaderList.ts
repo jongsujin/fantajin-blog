@@ -1,3 +1,5 @@
+import { SITE_PATHS } from '@/src/shared/config/routes'
+
 /**
  * @description Header Tab List
  */
@@ -6,22 +8,22 @@ export const HEADER_TAB_LIST = [
   {
     id: 1,
     title: 'Blog',
-    href: '/',
+    href: SITE_PATHS.home,
   },
   {
     id: 2,
     title: 'About',
-    href: '/about',
+    href: SITE_PATHS.about,
   },
   {
     id: 3,
     title: 'Life',
-    href: '/life',
+    href: SITE_PATHS.life,
   },
   {
     id: 4,
     title: 'Tag',
-    href: '/tags',
+    href: SITE_PATHS.tags,
   },
 ]
 
