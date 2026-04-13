@@ -8,44 +8,42 @@ const postsDirectory = path.join(
   'src/entities/post/content/posts',
 )
 
+function readPostFile(slug: string) {
+  const fullPath = path.join(postsDirectory, `${slug}.mdx`)
+  return fs.readFileSync(fullPath, 'utf8')
+}
+
+function parsePostSummary(fileContents: string, slug: string) {
+  const { data } = matter(fileContents)
+
+  return {
+    slug,
+    title: data.title || '',
+    date: data.date || '',
+    description: data.description || '',
+    tags: data.tags || [],
+    thumbnail: data.thumbnail || '',
+  }
+}
+
 // 모든 포스트 가져오기 함수 추가
 export async function getAllPosts() {
-  // 디렉토리에서 모든 파일 이름 가져오기
   const fileNames = fs.readdirSync(postsDirectory)
 
-  // 각 파일에서 데이터 추출
   const allPostsData = await Promise.all(
     fileNames
       .filter((fileName) => fileName.endsWith('.mdx'))
       .map(async (fileName) => {
-        // 파일 이름에서 .mdx 확장자 제거하여 slug 생성
         const slug = fileName.replace(/\.mdx$/, '')
+        const fileContents = fs.readFileSync(
+          path.join(postsDirectory, fileName),
+          'utf8',
+        )
 
-        // 파일 전체 경로
-        const fullPath = path.join(postsDirectory, fileName)
-
-        // 파일 내용 읽기
-        const fileContents = fs.readFileSync(fullPath, 'utf8')
-
-        // gray-matter로 메타데이터 파싱
-        const { data } = matter(fileContents)
-
-        // 타입 안전성을 위한 기본값 설정
-        const post = {
-          slug,
-          title: data.title || '',
-          date: data.date || '',
-          description: data.description || '',
-          tags: data.tags || [],
-          thumbnail: data.thumbnail || '',
-          // content는 블로그 목록에서는 필요 없으므로 제외
-        }
-
-        return post
+        return parsePostSummary(fileContents, slug)
       }),
   )
 
-  // 날짜 기준 내림차순 정렬 (최신 글이 먼저 오도록)
   return allPostsData.sort((a, b) => {
     if (a.date < b.date) {
       return 1
@@ -55,20 +53,17 @@ export async function getAllPosts() {
   })
 }
 
-export async function getPostBySlug(slug: string) {
-  const fullPath = path.join(postsDirectory, `${slug}.mdx`)
-  const fileContents = fs.readFileSync(fullPath, 'utf8')
+export async function getPostMetadataBySlug(slug: string) {
+  return parsePostSummary(readPostFile(slug), slug)
+}
 
-  // 프론트매터와 콘텐츠 분리
-  const { data, content } = matter(fileContents)
+export async function getPostBySlug(slug: string) {
+  const fileContents = readPostFile(slug)
+
+  const { content } = matter(fileContents)
 
   return {
-    slug,
-    title: data.title || '',
-    date: data.date || '',
-    description: data.description || '',
-    tags: data.tags || [],
+    ...parsePostSummary(fileContents, slug),
     content,
-    thumbnail: data.thumbnail || '',
   }
 }
