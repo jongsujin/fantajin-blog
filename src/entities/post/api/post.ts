@@ -2,11 +2,6 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { serialize } from 'next-mdx-remote/serialize'
-import rehypeHighlight from 'rehype-highlight'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import remarkGfm from 'remark-gfm' // GitHub Flavored Markdown 지원 (체크박스 등)
 
 const postsDirectory = path.join(
   process.cwd(),
@@ -67,28 +62,13 @@ export async function getPostBySlug(slug: string) {
   // 프론트매터와 콘텐츠 분리
   const { data, content } = matter(fileContents)
 
-  // MDX 콘텐츠 직렬화
-  const mdxSource = await serialize(content, {
-    mdxOptions: {
-      remarkPlugins: [
-        remarkGfm, // 체크박스 지원을 위해 필요
-      ],
-      rehypePlugins: [
-        rehypeSlug,
-        [rehypeAutolinkHeadings, { behavior: 'wrap' }],
-        rehypeHighlight,
-      ],
-    },
-    parseFrontmatter: false, // 이미 matter로 처리했기 때문
-  })
-
   return {
     slug,
     title: data.title || '',
     date: data.date || '',
     description: data.description || '',
     tags: data.tags || [],
-    content: mdxSource,
+    content,
     thumbnail: data.thumbnail || '',
   }
 }

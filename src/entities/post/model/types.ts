@@ -1,4 +1,3 @@
-import { MDXRemoteSerializeResult } from 'next-mdx-remote/rsc'
 import { ReactNode } from 'react'
 
 export interface Post {
@@ -7,7 +6,7 @@ export interface Post {
   date: string
   description: string
   tags: string[]
-  content?: MDXRemoteSerializeResult
+  content?: string
   thumbnail?: string
 }
 export interface CardProps {

@@ -1,3 +1,5 @@
+'use client'
+
 import { MDXImageProps } from '@/src/entities/post/model/types'
 import Image from 'next/image'
 import { useState } from 'react'
