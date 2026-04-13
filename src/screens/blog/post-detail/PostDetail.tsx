@@ -1,15 +1,27 @@
-'use client'
-
 import { PostDetailProps } from '@/src/entities/post/model/types'
 import { format, parseISO } from 'date-fns'
 import { ko } from 'date-fns/locale'
-import { MDXRemote } from 'next-mdx-remote'
+import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { Comments } from '@/src/widget/comments/ui/Comments'
 import { MDXImage } from '@/src/shared/ui/MDXImage'
+import type { ComponentProps } from 'react'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeSlug from 'rehype-slug'
+import remarkGfm from 'remark-gfm'
 
 const components = {
   img: MDXImage,
+}
+
+const mdxOptions = {
+  remarkPlugins: [remarkGfm],
+  rehypePlugins: [
+    rehypeSlug,
+    [rehypeAutolinkHeadings, { behavior: 'wrap' }] as const,
+    rehypeHighlight,
+  ],
 }
 
 export default function PostDetail({ post }: PostDetailProps) {
@@ -36,7 +48,16 @@ export default function PostDetail({ post }: PostDetailProps) {
 
           <div className="prose prose-invert w-full max-w-none">
             {post.content && (
-              <MDXRemote {...post.content} components={components} />
+              <MDXRemote
+                source={post.content}
+                components={components}
+                options={{
+                  mdxOptions:
+                    mdxOptions as NonNullable<
+                      ComponentProps<typeof MDXRemote>['options']
+                    >['mdxOptions'],
+                }}
+              />
             )}
           </div>
           <Comments slug={post.slug} />
