@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-/* @import 'highlight.js/styles/vs.css'; */
+@import 'highlight.js/styles/github-dark-dimmed.css';
 
 :root {
   --background: #ffffff;
@@ -61,8 +61,8 @@ body[data-theme='dark'] {
 }
 
 body[data-theme='dark'] .postcard-border {
-  border: 3px solid #374151 !important;
-  --hljs-bg: #374151;
+  border: 1px solid #374151 !important;
+  --hljs-bg: #22272e;
 }
 
 body[data-theme='dark'] .tag-border {
@@ -112,8 +112,10 @@ body[data-theme='dark'] .tag-border {
 }
 
 .prose {
-  max-width: none !important;
+  max-width: 48rem !important; /* max-w-3xl */
   width: 100% !important;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* 마크다운 목록 스타일링 */
@@ -224,10 +226,10 @@ input[type='checkbox']:checked::before {
   color: #0284c7; /* 라이트 블루 색상 */
   background: linear-gradient(
     to bottom,
-    transparent 60%,
-    rgba(2, 132, 199, 0.2) 40%
+    transparent 70%,
+    rgba(2, 132, 199, 0.15) 30%
   );
-  padding: 0 0.2rem;
+  padding: 0 0.1rem;
 }
 
 /* 다크 모드에서 강조 텍스트 스타일링 */
@@ -235,7 +237,7 @@ body[data-theme='dark'] .prose strong {
   color: #38bdf8; /* 다크 모드에서는 더 밝은 블루 */
   background: linear-gradient(
     to bottom,
-    transparent 60%,
-    rgba(56, 189, 248, 0.2) 40%
+    transparent 70%,
+    rgba(56, 189, 248, 0.15) 30%
   );
 }
