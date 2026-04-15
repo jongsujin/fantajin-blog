@@ -11,8 +11,14 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 
+import { CodeBlock } from '@/src/shared/ui/CodeBlock'
+import { TOC } from '@/src/widget/toc/ui/TOC'
+
+import React from 'react'
+
 const components = {
   img: MDXImage,
+  pre: CodeBlock as React.FC<React.HTMLAttributes<HTMLPreElement>>,
 }
 
 const mdxOptions = {
@@ -26,8 +32,9 @@ const mdxOptions = {
 
 export default function PostDetail({ post }: PostDetailProps) {
   return (
-    <div className="w-full px-4 py-8">
-      <Card className="postcard-border w-full">
+    <div className="mx-auto flex w-full max-w-[1200px] flex-col gap-8 px-4 py-8 xl:flex-row">
+      <div className="min-w-0 flex-1">
+        <Card className="postcard-border w-full">
         <CardContent className="w-full">
           <div className="mb-8">
             <h1 className="mb-2 text-3xl font-bold">{post.title}</h1>
@@ -63,6 +70,10 @@ export default function PostDetail({ post }: PostDetailProps) {
           <Comments slug={post.slug} />
         </CardContent>
       </Card>
+      </div>
+      <aside className="hidden w-64 shrink-0 xl:block">
+        <TOC />
+      </aside>
     </div>
   )
 }
