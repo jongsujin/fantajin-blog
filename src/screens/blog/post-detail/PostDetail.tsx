@@ -11,8 +11,13 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeSlug from 'rehype-slug'
 import remarkGfm from 'remark-gfm'
 
+import { CodeBlock } from '@/src/shared/ui/CodeBlock'
+
+import React from 'react'
+
 const components = {
   img: MDXImage,
+  pre: CodeBlock as React.FC<React.HTMLAttributes<HTMLPreElement>>,
 }
 
 const mdxOptions = {
