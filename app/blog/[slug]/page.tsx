@@ -5,6 +5,14 @@ import PostDetail from '@/src/screens/blog/post-detail/PostDetail'
 import { notFound } from 'next/navigation'
 import { siteConfig, toAbsoluteUrl } from '@/src/shared/config/metadata'
 
+function decodeSlug(slug: string) {
+  try {
+    return decodeURIComponent(slug)
+  } catch {
+    return slug
+  }
+}
+
 export async function generateMetadata({
   params,
 }: PostPageProps): Promise<Metadata> {
@@ -15,8 +23,8 @@ export async function generateMetadata({
   }
 
   try {
-    const post = await getPostMetadataBySlug(resolvedParams.slug)
-    const canonicalPath = `/blog/${post.slug}`
+    const post = await getPostMetadataBySlug(decodeSlug(resolvedParams.slug))
+    const canonicalPath = `/blog/${encodeURIComponent(post.slug)}`
     const image = post.thumbnail || siteConfig.defaultOgImage
 
     return {
@@ -57,7 +65,7 @@ export default async function PostPage({ params }: PostPageProps) {
   }
 
   try {
-    const post = await getPostBySlug(resolvedParams.slug)
+    const post = await getPostBySlug(decodeSlug(resolvedParams.slug))
     return <PostDetail post={post} />
   } catch (error) {
     console.error(error)
