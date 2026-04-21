@@ -1,6 +1,8 @@
 import Link from 'next/link'
+import { BlogPageProps } from '@/src/entities/post/model/types'
 import { Card, CardContent } from '@/src/shared/ui/Card'
 import { SITE_PATHS } from '@/src/shared/config/routes'
+import { PostCard } from '@/src/widget/post-card/ui/PostCard'
 
 const upcomingTopics = [
   '개발자 커리어와 일하는 방식',
@@ -8,7 +10,13 @@ const upcomingTopics = [
   '재테크와 생활 루틴 정리',
 ]
 
-export default function LifePage() {
+const lifeTags = ['회고', '커리어', '잡담', '일상', '재테크', '라이프']
+
+export default function LifePage({ posts }: BlogPageProps) {
+  const lifePosts = posts.filter((post) =>
+    post.tags.some((tag) => lifeTags.includes(tag)),
+  )
+
   return (
     <div className="container mx-auto px-4 py-12">
       <Card className="bg-cardColor/90 shadow-lg">
@@ -24,6 +32,17 @@ export default function LifePage() {
               다시 꺼내보고 싶은 메모를 천천히 모아두겠습니다.
             </p>
           </div>
+
+          {lifePosts.length > 0 ? (
+            <div className="mb-10">
+              <h2 className="mb-5 text-2xl font-semibold">최근 기록</h2>
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {lifePosts.map((post) => (
+                  <PostCard key={post.slug} post={post} />
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="grid gap-6 md:grid-cols-2">
             <Card className="bg-backgroundColor/50 h-full">
