@@ -158,7 +158,7 @@ export default function AboutPage() {
               <div className="bg-backgroundColor/50 rounded-lg p-6">
                 <h3 className="mb-2 text-xl font-bold">개발자</h3>
                 <p className="mb-3 font-semibold text-gray-500">
-                  바이옴에이츠 | 2024.07 - 현재 | 경기도 과천시
+                  바이옴에이츠 | 2024.07 - 2026.02 | 경기도 과천시
                 </p>
                 <ul className="list-disc pl-5">
                   <li>
