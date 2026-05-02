@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { siteConfig, toAbsoluteUrl } from './site'
 
+export { siteConfig, toAbsoluteUrl }
+
 type MetadataOptions = {
   title: string
   description: string
