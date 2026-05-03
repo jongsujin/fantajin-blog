@@ -15,7 +15,7 @@ export async function GET() {
 
   const items = posts
     .map((post) => {
-      const postUrl = toAbsoluteUrl(`/blog/${post.slug}`)
+      const postUrl = toAbsoluteUrl(`/blog/${encodeURIComponent(post.slug)}`)
       const categories = post.tags
         .map((tag: string) => `<category>${escapeXml(tag)}</category>`)
         .join('')
