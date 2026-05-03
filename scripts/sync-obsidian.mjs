@@ -50,8 +50,15 @@ async function main() {
     }
 
     const slug = getSlug(entry.parsed.data.slug, entry.sourceFile)
-    const validationErrors = validateFrontmatter({
+    const existingMetadata = await readExistingPostMetadata(slug)
+    const { data, warnings } = enrichFrontmatter({
       data: entry.parsed.data,
+      content: entry.parsed.content,
+      existingMetadata,
+      sourceFile: entry.sourceFile,
+    })
+    const validationErrors = validateFrontmatter({
+      data,
       slug,
       sourceFile: entry.sourceFile,
     })
@@ -63,7 +70,12 @@ async function main() {
 
     publishableEntries.push({
       ...entry,
+      parsed: {
+        ...entry.parsed,
+        data,
+      },
       slug,
+      metadataWarnings: warnings,
     })
   }
 
@@ -106,6 +118,9 @@ async function main() {
 
     result.published += 1
     result.images += imageCount
+    result.warnings.push(
+      ...entry.metadataWarnings.map((warning) => `${slug}: ${warning}`),
+    )
     result.warnings.push(...warnings.map((warning) => `${slug}: ${warning}`))
   }
 
@@ -124,6 +139,17 @@ async function loadMarkdownFile(sourceFile) {
   return {
     sourceFile,
     parsed: matter(raw),
+  }
+}
+
+async function readExistingPostMetadata(slug) {
+  const existingPostPath = path.join(config.outputPostDir, `${slug}.mdx`)
+
+  try {
+    const raw = await fs.readFile(existingPostPath, 'utf8')
+    return matter(raw).data
+  } catch {
+    return null
   }
 }
 
@@ -177,6 +203,50 @@ function slugify(value) {
     .replace(/^-+|-+$/g, '')
 }
 
+function enrichFrontmatter({ data, content, existingMetadata, sourceFile }) {
+  const nextData = { ...data }
+  const warnings = []
+  const fileName = path.relative(config.obsidianPostDir, sourceFile)
+
+  if (
+    (typeof nextData.description !== 'string' ||
+      nextData.description.trim().length === 0) &&
+    typeof existingMetadata?.description === 'string' &&
+    existingMetadata.description.trim().length > 0
+  ) {
+    nextData.description = existingMetadata.description
+    warnings.push(
+      `${fileName}에 description이 없어 기존 발행 글의 description을 재사용했습니다.`,
+    )
+  }
+
+  if (
+    typeof nextData.description !== 'string' ||
+    nextData.description.trim().length === 0
+  ) {
+    const fallbackDescription = createDescriptionFallback(content)
+
+    if (fallbackDescription) {
+      nextData.description = fallbackDescription
+      warnings.push(
+        `${fileName}에 description이 없어 본문 첫 문단으로 자동 생성했습니다.`,
+      )
+    }
+  }
+
+  if (!hasValidTags(nextData.tags) && hasValidTags(existingMetadata?.tags)) {
+    nextData.tags = existingMetadata.tags
+    warnings.push(
+      `${fileName}에 tags가 없어 기존 발행 글의 tags를 재사용했습니다.`,
+    )
+  }
+
+  return {
+    data: nextData,
+    warnings,
+  }
+}
+
 function validateFrontmatter({ data, slug, sourceFile }) {
   const errors = []
   const prefix = `${path.relative(config.obsidianPostDir, sourceFile)}`
@@ -215,6 +285,35 @@ function validateFrontmatter({ data, slug, sourceFile }) {
   }
 
   return errors
+}
+
+function hasValidTags(tags) {
+  return (
+    Array.isArray(tags) &&
+    tags.length > 0 &&
+    tags.every((tag) => typeof tag === 'string' && tag.trim().length > 0)
+  )
+}
+
+function createDescriptionFallback(content) {
+  const paragraphs = content
+    .split(/\n\s*\n/)
+    .map((paragraph) => stripMarkdown(paragraph).replace(/\s+/g, ' ').trim())
+    .filter(Boolean)
+
+  if (paragraphs.length === 0) {
+    return ''
+  }
+
+  return paragraphs[0].slice(0, 140).trim()
+}
+
+function stripMarkdown(value) {
+  return value
+    .replace(/!\[\[[^\]]+\]\]/g, ' ')
+    .replace(/!\[[^\]]*\]\([^)]+\)/g, ' ')
+    .replace(/\[(.*?)\]\([^)]+\)/g, '$1')
+    .replace(/[`*_>#-]/g, ' ')
 }
 
 function validateDuplicateSlugs(entries) {
