@@ -30,28 +30,58 @@ const imageEmbedPattern = /!\[\[([^\]\n]+)\]\]/g
 
 async function main() {
   const sourceFiles = await findMarkdownFiles(config.obsidianPostDir)
+  const parsedEntries = await Promise.all(sourceFiles.map(loadMarkdownFile))
   const result = {
     scanned: sourceFiles.length,
     published: 0,
     skipped: 0,
     images: 0,
     warnings: [],
+    errors: [],
+    removedPosts: 0,
+    removedImageDirs: 0,
+  }
+  const publishableEntries = []
+
+  for (const entry of parsedEntries) {
+    if (!isPublishable(entry.parsed.data.publish)) {
+      result.skipped += 1
+      continue
+    }
+
+    const slug = getSlug(entry.parsed.data.slug, entry.sourceFile)
+    const validationErrors = validateFrontmatter({
+      data: entry.parsed.data,
+      slug,
+      sourceFile: entry.sourceFile,
+    })
+
+    if (validationErrors.length > 0) {
+      result.errors.push(...validationErrors)
+      continue
+    }
+
+    publishableEntries.push({
+      ...entry,
+      slug,
+    })
+  }
+
+  result.errors.push(...validateDuplicateSlugs(publishableEntries))
+
+  if (result.errors.length > 0) {
+    printSummary(result)
+    process.exitCode = 1
+    return
   }
 
   await fs.mkdir(config.outputPostDir, { recursive: true })
   await fs.mkdir(config.outputImageDir, { recursive: true })
 
-  for (const sourceFile of sourceFiles) {
-    const raw = await fs.readFile(sourceFile, 'utf8')
-    const parsed = matter(raw)
-
-    if (!isPublishable(parsed.data.publish)) {
-      result.skipped += 1
-      continue
-    }
-
-    const slug = getSlug(parsed.data.slug, sourceFile)
+  for (const entry of publishableEntries) {
+    const { parsed, slug } = entry
     const imageOutputDir = path.join(config.outputImageDir, slug)
+    await fs.rm(imageOutputDir, { recursive: true, force: true })
     await fs.mkdir(imageOutputDir, { recursive: true })
 
     const { content, imageCount, warnings } = await convertImageEmbeds({
@@ -79,7 +109,22 @@ async function main() {
     result.warnings.push(...warnings.map((warning) => `${slug}: ${warning}`))
   }
 
+  const cleanupResult = await removeStaleGeneratedContent(
+    new Set(publishableEntries.map((entry) => entry.slug)),
+  )
+  result.removedPosts = cleanupResult.removedPosts
+  result.removedImageDirs = cleanupResult.removedImageDirs
+
   printSummary(result)
+}
+
+async function loadMarkdownFile(sourceFile) {
+  const raw = await fs.readFile(sourceFile, 'utf8')
+
+  return {
+    sourceFile,
+    parsed: matter(raw),
+  }
 }
 
 function resolvePath(inputPath) {
@@ -130,6 +175,61 @@ function slugify(value) {
     .replace(/['"]/g, '')
     .replace(/[^a-z0-9가-힣ㄱ-ㅎㅏ-ㅣ]+/g, '-')
     .replace(/^-+|-+$/g, '')
+}
+
+function validateFrontmatter({ data, slug, sourceFile }) {
+  const errors = []
+  const prefix = `${path.relative(config.obsidianPostDir, sourceFile)}`
+
+  if (slug.length === 0) {
+    errors.push(`${prefix}: slug를 만들 수 없습니다. 파일명 또는 frontmatter slug를 확인해주세요.`)
+  }
+
+  if (typeof data.title !== 'string' || data.title.trim().length === 0) {
+    errors.push(`${prefix}: title은 비어 있지 않은 문자열이어야 합니다.`)
+  }
+
+  if (!data.date || Number.isNaN(new Date(data.date).getTime())) {
+    errors.push(`${prefix}: date는 올바른 날짜여야 합니다.`)
+  }
+
+  if (
+    typeof data.description !== 'string' ||
+    data.description.trim().length === 0
+  ) {
+    errors.push(`${prefix}: description은 비어 있지 않은 문자열이어야 합니다.`)
+  }
+
+  if (!Array.isArray(data.tags) || data.tags.length === 0) {
+    errors.push(`${prefix}: tags는 하나 이상의 값을 가진 배열이어야 합니다.`)
+  } else if (
+    data.tags.some(
+      (tag) => typeof tag !== 'string' || tag.trim().length === 0,
+    )
+  ) {
+    errors.push(`${prefix}: tags에는 비어 있지 않은 문자열만 사용할 수 있습니다.`)
+  }
+
+  if (data.thumbnail != null && typeof data.thumbnail !== 'string') {
+    errors.push(`${prefix}: thumbnail은 문자열 경로여야 합니다.`)
+  }
+
+  return errors
+}
+
+function validateDuplicateSlugs(entries) {
+  const counts = new Map()
+
+  for (const entry of entries) {
+    counts.set(entry.slug, (counts.get(entry.slug) || 0) + 1)
+  }
+
+  return entries
+    .filter((entry) => counts.get(entry.slug) > 1)
+    .map(
+      (entry) =>
+        `${path.relative(config.obsidianPostDir, entry.sourceFile)}: slug "${entry.slug}"가 중복됩니다.`,
+    )
 }
 
 async function convertImageEmbeds({ content, slug, imageOutputDir }) {
@@ -190,9 +290,18 @@ async function normalizeFrontmatter({ data, slug, imageOutputDir, warnings }) {
   const frontmatter = { ...data }
   delete frontmatter.publish
   delete frontmatter.slug
+  frontmatter.contentSource = 'obsidian'
 
   if (frontmatter.date) {
     frontmatter.date = formatDate(frontmatter.date)
+  }
+
+  if (frontmatter.description) {
+    frontmatter.description = String(frontmatter.description).trim()
+  }
+
+  if (Array.isArray(frontmatter.tags)) {
+    frontmatter.tags = frontmatter.tags.map((tag) => String(tag).trim())
   }
 
   if (frontmatter.thumbnail) {
@@ -239,17 +348,88 @@ function toPublicImageUrl(slug, fileName) {
   )}`
 }
 
+async function removeStaleGeneratedContent(publishedSlugs) {
+  const result = {
+    removedPosts: 0,
+    removedImageDirs: 0,
+  }
+
+  const outputEntries = await fs.readdir(config.outputPostDir, {
+    withFileTypes: true,
+  })
+
+  for (const entry of outputEntries) {
+    if (!entry.isFile() || !entry.name.endsWith('.mdx')) {
+      continue
+    }
+
+    const slug = entry.name.replace(/\.mdx$/, '')
+    if (publishedSlugs.has(slug)) {
+      continue
+    }
+
+    const fullPath = path.join(config.outputPostDir, entry.name)
+    const fileContents = await fs.readFile(fullPath, 'utf8')
+    const parsed = matter(fileContents)
+
+    if (!isManagedObsidianPost({ slug, parsed, content: fileContents })) {
+      continue
+    }
+
+    await fs.rm(fullPath, { force: true })
+    result.removedPosts += 1
+  }
+
+  const imageEntries = await fs.readdir(config.outputImageDir, {
+    withFileTypes: true,
+  })
+
+  for (const entry of imageEntries) {
+    if (!entry.isDirectory() || publishedSlugs.has(entry.name)) {
+      continue
+    }
+
+    await fs.rm(path.join(config.outputImageDir, entry.name), {
+      recursive: true,
+      force: true,
+    })
+    result.removedImageDirs += 1
+  }
+
+  return result
+}
+
+function isManagedObsidianPost({ slug, parsed, content }) {
+  if (parsed.data.contentSource === 'obsidian') {
+    return true
+  }
+
+  const encodedPrefix = `/images/obsidian/${encodeURIComponent(slug)}/`
+  const thumbnail = String(parsed.data.thumbnail || '')
+
+  return thumbnail.includes(encodedPrefix) || content.includes(encodedPrefix)
+}
+
 function printSummary(result) {
   console.log('Obsidian 동기화 완료')
   console.log(`- 확인한 글: ${result.scanned}개`)
   console.log(`- 발행한 글: ${result.published}개`)
   console.log(`- 건너뛴 글: ${result.skipped}개`)
   console.log(`- 복사한 이미지: ${result.images}개`)
+  console.log(`- 정리한 글: ${result.removedPosts}개`)
+  console.log(`- 정리한 이미지 폴더: ${result.removedImageDirs}개`)
 
   if (result.warnings.length > 0) {
     console.warn('\n경고')
     for (const warning of result.warnings) {
       console.warn(`- ${warning}`)
+    }
+  }
+
+  if (result.errors.length > 0) {
+    console.error('\n오류')
+    for (const error of result.errors) {
+      console.error(`- ${error}`)
     }
   }
 }
