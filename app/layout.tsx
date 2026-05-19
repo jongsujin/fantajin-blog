@@ -13,6 +13,19 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 })
 
+const websiteJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: siteConfig.name,
+  url: siteConfig.siteUrl,
+  description: siteConfig.description,
+  inLanguage: siteConfig.locale,
+  publisher: {
+    '@type': 'Person',
+    name: siteConfig.author,
+  },
+})
+
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
   title: {
@@ -69,6 +82,22 @@ export default function RootLayout({
           rel="stylesheet"
           as="style"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+        />
+        {process.env.GOOGLE_SITE_VERIFICATION ? (
+          <meta
+            name="google-site-verification"
+            content={process.env.GOOGLE_SITE_VERIFICATION}
+          />
+        ) : null}
+        {process.env.NAVER_SITE_VERIFICATION ? (
+          <meta
+            name="naver-site-verification"
+            content={process.env.NAVER_SITE_VERIFICATION}
+          />
+        ) : null}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: websiteJsonLd }}
         />
       </head>
       <body

@@ -4,6 +4,7 @@ import { PostPageProps } from '@/src/entities/post/model/types'
 import PostDetail from '@/src/screens/blog/post-detail/PostDetail'
 import { notFound } from 'next/navigation'
 import { siteConfig, toAbsoluteUrl } from '@/src/shared/config/metadata'
+import React from 'react'
 
 function decodeSlug(slug: string) {
   try {
@@ -66,7 +67,72 @@ export default async function PostPage({ params }: PostPageProps) {
 
   try {
     const post = await getPostBySlug(decodeSlug(resolvedParams.slug))
-    return <PostDetail post={post} />
+    const canonicalPath = `/blog/${encodeURIComponent(post.slug)}`
+    const image = post.thumbnail || siteConfig.defaultOgImage
+    const articleJsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BlogPosting',
+      headline: post.title,
+      description: post.description,
+      datePublished: post.date,
+      dateModified: post.date,
+      mainEntityOfPage: toAbsoluteUrl(canonicalPath),
+      image: [toAbsoluteUrl(image)],
+      keywords: post.tags,
+      articleSection: post.tags,
+      inLanguage: siteConfig.locale,
+      author: {
+        '@type': 'Person',
+        name: siteConfig.author,
+      },
+      publisher: {
+        '@type': 'Person',
+        name: siteConfig.author,
+      },
+      isPartOf: {
+        '@type': 'WebSite',
+        name: siteConfig.name,
+        url: siteConfig.siteUrl,
+      },
+    })
+    const breadcrumbJsonLd = JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: '홈',
+          item: siteConfig.siteUrl,
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: '블로그',
+          item: toAbsoluteUrl('/blog'),
+        },
+        {
+          '@type': 'ListItem',
+          position: 3,
+          name: post.title,
+          item: toAbsoluteUrl(canonicalPath),
+        },
+      ],
+    })
+
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: articleJsonLd }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: breadcrumbJsonLd }}
+        />
+        <PostDetail post={post} />
+      </>
+    )
   } catch (error) {
     console.error(error)
     notFound()
