@@ -2,13 +2,12 @@
 title: Sentry 도입 일지
 date: '2026-05-18'
 description: Sentry 도입 후 실제 모니터링 체계를 구축해본 경험을 공유합니다.
-thumbnail: '/images/2026/2/sentryThumbnail.png'
+thumbnail: sentryThumbnail.png
 tags:
   - 개발
   - 프론트엔드
 contentSource: obsidian
 ---
-
 현재 회사에 Sentry를 도입하고 개선한 경험을 나눠보고자 합니다.
 
 이전 회사에서도 Sentry나 Datadog 같은 모니터링 체계를 구축해보고 싶은 마음이 있었는데 지금 회사에서 다뤄볼 기회가 있었고 이를 기록해두려고 합니다.
@@ -35,129 +34,129 @@ Sentry는 요약하자면 서비스에서 발생하는 에러를 자동으로 �
 이제 Sentry를 이해하기 위한 핵심 용어과 개념에 대해 살펴보겠습니다.
 
 1. 이벤트 (Event)
-
-   - Sentry에 들어가는 개별 기록입니다.
-   - 각각의 이벤트가 하나의 에러가 될 수 있습니다.
-
+    
+    - Sentry에 들어가는 개별 기록입니다.
+    - 각각의 이벤트가 하나의 에러가 될 수 있습니다.
 2. 이슈 (Issue)
-
-   - 비슷한 이벤트들을 Sentry가 묶어서 보여주는 그룹입니다.
-
+    
+    - 비슷한 이벤트들을 Sentry가 묶어서 보여주는 그룹입니다.
 3. 에러 캡쳐 (Capture)
-
-   - 에러 정보를 Sentry로 전송하는 행위입니다. 아래와 같은 종류가 있습니다.
-
-     - `captureException` : 에러 객체나 문자열 전송 가능
-
-       ```tsx
-       import * as Sentry from '@Sentry/react'
-
-       try {
-         aFunctionThatMightFail()
-       } catch (err) {
-         Sentry.captureException(err)
-       }
-       ```
-
-     - `captureMessage` : 문자열 전송 기능
-       ```tsx
-       Sentry.captureMessage('에러가 발생했습니다!')
-       ```
-
-   1. 태그 (Tag)
-      - 에러에 붙이는 라벨입니다. Sentry 대시보드에서 검색,필터, 알림 조건으로 쓰입니다.
-   2. 브레드크럼 (Breadcrumb)
-      - 에러 직전까지의 사용자 행동 기록을 의미합니다. “빵 부스러기”라는 뜻처럼 직전 유저의 기록을 확인할 수 있습니다.
-   3. 세션 리플레이 (Session Replay)
-      - 사용자 화면을 비디오처럼 재생해주는 기능입니다.
-      - 개인정보 보호를 위해 마스킹 정책 등을 고려해야 합니다.
-   4. 분산 트레이싱
-      - 하나의 사용자 행동을 처음부터 끝까지 한 흐름으로 묶어서 보는 것입니다.
-   5. 소스맵 (Source Map)
-      - 빌드된 코드를 원본 코드로 되돌려주는 매핑 파일입니다.
-      - 에러가 났을 때 실제 어느 코드 라인에서 발생했는지 알아볼 수 있게 해줍니다.
-   6. 에러 종류
-      - Unhandled Error
-        - try/catch 밖으로 터진 에러
-        - 자동 수집되기 쉬움
-      - Handled Error
-        - try/catch로 잡았지만 `captureException` 명시적으로 보낸 에러
-
-   이외 여러가지가 있지만 설명한 내용만 봐도 충분히 설정이 가능하므로 어떻게 개선했는지를 살펴보겠습니다.
-
-   ## 개선 사항
-
-   ### 1. 단순 에러 수집이 아닌 실질적인 모니터링 기능으로 확대
-
-   기존 에러 수집 단계까지는 구축이 되어 있었다면 이를 실질적인 모니터링 기능으로 확대하고자 했습니다.
-
-   #### 1.1 프로젝트 설정
-
-   현재 회사는 같은 서비스를 웹과 앱 동시에 서비스하고 있습니다. 따라서 앱과 웹을 별도의 프로젝트를 설정하여 각각의 이슈를 트래킹할 수 있도록 했습니다.
-
-   각각 별도의 프로젝트와 DSN을 설정하였고 알림 체계를 통합하여 앱,웹 각각의 이슈를 효과적으로 파악할 수 있도록 개선했습니다.
-
-   #### 1.2 태그 확대
-
-   에러를 구분할 때 사용되는 **태그** 범위를 확대했습니다. 아래와 같이 구분하여 에러 발생 위치, 서비스, 심각성 등을 나누어 개발자가 이슈를 볼 때 중요도를 쉽게 파악할 수 있도록 개선했습니다.
-
-   **태그 예시**
-
-   | 태그             | 형식       | 부착 방법               | 예시                           |
-   | ---------------- | ---------- | ----------------------- | ------------------------------ |
-   | `feature`        | kebab-case | 수동 (필수)             | `toss-payment-confirm`         |
-   | `error.action`   | snake_case | 수동 (필수)             | `payment_confirm`              |
-   | `error.service`  | kebab-case | 수동 (필수)             | `toss`, `points`               |
-   | `error.severity` | enum       | 수동 (필수)             | `critical` / `high` / `medium` |
-   | `error.source`   | enum       | **자동** (`beforeSend`) | `internal` / `external`        |
-
-   또한 수동으로 부착하지 않아도 `beforeSend` 가 자동으로 붙이는 태그도 확대했습니다.
-
-   간단하게 몇 가지 보자면 아래와 같습니다.
-
-   - `api.method` - `GET` , `POST` 등
-   - `api.path` - `api/test/sentry`
-   - `api.status` - `500` , `400`
-
-   #### 1.3 에러 캡쳐 공통 헬퍼 함수 구축
-
-   `captureException` , `captureMessage` 등 라우트마다 산재되어있던 것을 공통 헬퍼 서비스 함수로 구축하여 에러 출력 양식을 통일시키고자 했습니다.
-
-   아래처럼 유저 정보, 응답 컨텍스트, 필수 태그 등이 통일성 있게 삽입될 수 있도록 구현했습니다.
-
-   ```tsx
-   export function captureApiError(error, request, options) {
-     Sentry.withScope((scope) => {
-       // 유저 정보 부착
-       if (options?.user) scope.setUser({ id: options.user.userId, ... });
-
-       // 요청 컨텍스트 (헤더는 sanitize)
-       scope.setContext('API Request Detail', {
-         method: request.method,
-         url: request.url,
-         headers: sanitizeData({ ... }),
-       });
-
-       // 응답 컨텍스트 (바디 트렁케이트)
-       scope.setContext('API Response Detail', {
-         status: options.responseStatus,
-         data: truncateData(sanitizeData(options.responseBody)),
-       });
-
-       // 5축 태그
-       scope.setTag('feature', options.feature);
-       scope.setTag('api.method', request.method);
-       scope.setTag('api.path', new URL(request.url).pathname);
-       scope.setTag('api.status', options.responseStatus.toString());
-
-       // fingerprint / severity / level 자동 결정
-       if (options.fingerprint?.length) scope.setFingerprint(options.fingerprint);
-       if (options.responseStatus >= 500) scope.setLevel('error');
-
-       Sentry.captureException(normalizeError(error));
-     });
-   }
-   ```
+    
+    - 에러 정보를 Sentry로 전송하는 행위입니다. 아래와 같은 종류가 있습니다.
+        - `captureException` : 에러 객체나 문자열 전송 가능
+            
+            ```tsx
+            import * as Sentry from '@Sentry/react';
+            
+            try {
+               aFunctionThatMightFail();
+            }catch (err) {
+               Sentry.captureException(err);
+            }
+            ```
+            
+        - `captureMessage` : 문자열 전송 기능
+            
+            ```tsx
+            Sentry.captureMessage('에러가 발생했습니다!');
+            ```
+            
+    
+    1. 태그 (Tag)
+        - 에러에 붙이는 라벨입니다. Sentry 대시보드에서 검색,필터, 알림 조건으로 쓰입니다.
+    2. 브레드크럼 (Breadcrumb)
+        - 에러 직전까지의 사용자 행동 기록을 의미합니다. “빵 부스러기”라는 뜻처럼 직전 유저의 기록을 확인할 수 있습니다.
+    3. 세션 리플레이 (Session Replay)
+        - 사용자 화면을 비디오처럼 재생해주는 기능입니다.
+        - 개인정보 보호를 위해 마스킹 정책 등을 고려해야 합니다.
+    4. 분산 트레이싱
+        - 하나의 사용자 행동을 처음부터 끝까지 한 흐름으로 묶어서 보는 것입니다.
+    5. 소스맵 (Source Map)
+        - 빌드된 코드를 원본 코드로 되돌려주는 매핑 파일입니다.
+        - 에러가 났을 때 실제 어느 코드 라인에서 발생했는지 알아볼 수 있게 해줍니다.
+    6. 에러 종류
+        - Unhandled Error
+            - try/catch 밖으로 터진 에러
+            - 자동 수집되기 쉬움
+        - Handled Error
+            - try/catch로 잡았지만 `captureException` 명시적으로 보낸 에러
+    
+    이외 여러가지가 있지만 설명한 내용만 봐도 충분히 설정이 가능하므로 어떻게 개선했는지를 살펴보겠습니다.
+    
+    ## 개선 사항
+    
+    ### 1. 단순 에러 수집이 아닌 실질적인 모니터링 기능으로 확대
+    
+    기존 에러 수집 단계까지는 구축이 되어 있었다면 이를 실질적인 모니터링 기능으로 확대하고자 했습니다.
+    
+    #### 1.1 프로젝트 설정
+    
+    현재 회사는 같은 서비스를 웹과 앱 동시에 서비스하고 있습니다. 따라서 앱과 웹을 별도의 프로젝트를 설정하여 각각의 이슈를 트래킹할 수 있도록 했습니다.
+    
+    각각 별도의 프로젝트와 DSN을 설정하였고 알림 체계를 통합하여 앱,웹 각각의 이슈를 효과적으로 파악할 수 있도록 개선했습니다.
+    
+    #### 1.2 태그 확대
+    
+    에러를 구분할 때 사용되는 **태그** 범위를 확대했습니다. 아래와 같이 구분하여 에러 발생 위치, 서비스, 심각성 등을 나누어 개발자가 이슈를 볼 때 중요도를 쉽게 파악할 수 있도록 개선했습니다.
+    
+    **태그 예시**
+    
+    |태그|형식|부착 방법|예시|
+    |---|---|---|---|
+    |`feature`|kebab-case|수동 (필수)|`toss-payment-confirm`|
+    |`error.action`|snake_case|수동 (필수)|`payment_confirm`|
+    |`error.service`|kebab-case|수동 (필수)|`toss`, `points`|
+    |`error.severity`|enum|수동 (필수)|`critical` / `high` / `medium`|
+    |`error.source`|enum|**자동** (`beforeSend`)|`internal` / `external`|
+    
+    또한 수동으로 부착하지 않아도 `beforeSend` 가 자동으로 붙이는 태그도 확대했습니다.
+    
+    간단하게 몇 가지 보자면 아래와 같습니다.
+    
+    - `api.method` - `GET` , `POST` 등
+    - `api.path` - `api/test/sentry`
+    - `api.status` - `500` , `400`
+    
+    #### 1.3 에러 캡쳐 공통 헬퍼 함수 구축
+    
+    `captureException` , `captureMessage` 등 라우트마다 산재되어있던 것을 공통 헬퍼 서비스 함수로 구축하여 에러 출력 양식을 통일시키고자 했습니다.
+    
+    아래처럼 유저 정보, 응답 컨텍스트, 필수 태그 등이 통일성 있게 삽입될 수 있도록 구현했습니다.
+    
+    ```tsx
+    export function captureApiError(error, request, options) {
+      Sentry.withScope((scope) => {
+        // 유저 정보 부착
+        if (options?.user) scope.setUser({ id: options.user.userId, ... });
+    
+        // 요청 컨텍스트 (헤더는 sanitize)
+        scope.setContext('API Request Detail', {
+          method: request.method,
+          url: request.url,
+          headers: sanitizeData({ ... }),
+        });
+    
+        // 응답 컨텍스트 (바디 트렁케이트)
+        scope.setContext('API Response Detail', {
+          status: options.responseStatus,
+          data: truncateData(sanitizeData(options.responseBody)),
+        });
+    
+        // 5축 태그
+        scope.setTag('feature', options.feature);
+        scope.setTag('api.method', request.method);
+        scope.setTag('api.path', new URL(request.url).pathname);
+        scope.setTag('api.status', options.responseStatus.toString());
+    
+        // fingerprint / severity / level 자동 결정
+        if (options.fingerprint?.length) scope.setFingerprint(options.fingerprint);
+        if (options.responseStatus >= 500) scope.setLevel('error');
+    
+        Sentry.captureException(normalizeError(error));
+      });
+    }
+    ```
+    
 
 ### 2. 알림 연동
 
@@ -182,12 +181,13 @@ Sentry를 도입 후 또 실제 모니터링 기능으로 개선해가는 과정
 
 아래처럼 다양한 이슈를 한 번에 파악할 수 있으며 보안상 테스트 알림이지만 Slack 을 통해 빠른 에러 파악으로 조기 대응이 가능하여 서비스 운영의 효율성을 향상 시킬 수 있었습니다.
 
+
 ![스크린샷 2026-05-14 오후 5.37.47](/images/obsidian/sentry-%EB%8F%84%EC%9E%85-%EC%9D%BC%EC%A7%80/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202026-05-14%20%EC%98%A4%ED%9B%84%205.37.47.png)
 ![스크린샷 2026-05-14 오후 5.36.58](/images/obsidian/sentry-%EB%8F%84%EC%9E%85-%EC%9D%BC%EC%A7%80/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202026-05-14%20%EC%98%A4%ED%9B%84%205.36.58.png)
 
 ## 마무리
 
-아직 더 서비스를 운영하면서 개선해야할 점들이 보이지만 Sentry 도입 후 CS 응대까지 걸리는 시간이 대폭 절약되었고 기능 수정도 빠르게 이어질 수 있었습니다.
+아직 더 서비스를 운영하면서 개선해야할 점들이 보이지만 Sentry 도입 후 CS 응대까지 걸리는 시간이 대폭 절약되었고 기능 수정도 빠르게 이어질 수 있어 사용자 이탈률이 줄어드는 모습을 확인할 수 있었습니다.
 
 이를 통해 서비스 개발을 넘어 모니터링의 중요성을 깨달았으며 인프라 등 다양한 요소를 쉽게 파악할 수 있는 체계적인 시스템의 필요성을 절실히 느꼈습니다.
 
