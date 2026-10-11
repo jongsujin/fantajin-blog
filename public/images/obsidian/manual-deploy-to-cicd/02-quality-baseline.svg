@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="682" viewBox="0 0 1200 682" role="img" aria-labelledby="title desc">
+<title id="title">경고 정리에서 품질 기준 고정까지</title><desc id="desc">전체 자동 수정 대신 규칙과 변경 위험도를 나눴습니다.</desc>
+<rect width="100%" height="100%" fill="#f5f7fb"/>
+<style>text{font-family: "Apple SD Gothic Neo","Noto Sans KR",sans-serif;} .title{font-size:32px;font-weight:700;fill:#13213c} .sub{font-size:18px;fill:#526079} .label{font-size:23px;font-weight:700;fill:#13213c} .detail{font-size:17px;fill:#526079}</style>
+<text x="64" y="66" class="title">경고 정리에서 품질 기준 고정까지</text>
+<text x="64" y="102" class="sub">전체 자동 수정 대신 규칙과 변경 위험도를 나눴습니다.</text>
+<rect x="64" y="136" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="178" r="19" fill="#2563eb"/>
+<text x="102" y="184" text-anchor="middle" font-size="17" fill="white">1</text>
+<text x="140" y="169" class="label">초기 기록: ESLint 오류 0 · 경고 1,614</text>
+<text x="140" y="197" class="detail">경고 개수는 기능 버그 개수와 같지 않습니다.</text>
+<path d="M600 224 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="244" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="286" r="19" fill="#2563eb"/>
+<text x="102" y="292" text-anchor="middle" font-size="17" fill="white">2</text>
+<text x="140" y="277" class="label">규칙·도메인별 수정</text>
+<text x="140" y="305" class="detail">선언 → 타입 계약 → Hook 실행 흐름을 각각 확인합니다.</text>
+<path d="M600 332 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="352" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="394" r="19" fill="#2563eb"/>
+<text x="102" y="400" text-anchor="middle" font-size="17" fill="white">3</text>
+<text x="140" y="385" class="label">수정 범위에 맞는 검증</text>
+<text x="140" y="413" class="detail">타입 검사와 관련 화면·API 확인을 연결합니다.</text>
+<path d="M600 440 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="460" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="502" r="19" fill="#2563eb"/>
+<text x="102" y="508" text-anchor="middle" font-size="17" fill="white">4</text>
+<text x="140" y="493" class="label">2026-06-25: 경고 0 기준 고정</text>
+<text x="140" y="521" class="detail">--max-warnings 0 · 새 경고가 생기면 lint가 실패합니다.</text>
+<text x="64" y="652" class="detail">문서·커밋 기반 설명도 · 실제 검사 로그가 아닙니다.</text>
+</svg>

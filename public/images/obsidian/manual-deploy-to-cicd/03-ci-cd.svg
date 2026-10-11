@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="898" viewBox="0 0 1200 898" role="img" aria-labelledby="title desc">
+<title id="title">검증과 배포를 연결한 흐름</title><desc id="desc">2026년 7월 전환 과정의 최종 구조를 축약했습니다.</desc>
+<rect width="100%" height="100%" fill="#f5f7fb"/>
+<style>text{font-family: "Apple SD Gothic Neo","Noto Sans KR",sans-serif;} .title{font-size:32px;font-weight:700;fill:#13213c} .sub{font-size:18px;fill:#526079} .label{font-size:23px;font-weight:700;fill:#13213c} .detail{font-size:17px;fill:#526079}</style>
+<text x="64" y="66" class="title">검증과 배포를 연결한 흐름</text>
+<text x="64" y="102" class="sub">2026년 7월 전환 과정의 최종 구조를 축약했습니다.</text>
+<rect x="64" y="136" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="178" r="19" fill="#2563eb"/>
+<text x="102" y="184" text-anchor="middle" font-size="17" fill="white">1</text>
+<text x="140" y="169" class="label">PR 검증과 리뷰</text>
+<text x="140" y="197" class="detail">lint·타입·테스트·빌드·스모크의 실행 조건을 정리합니다.</text>
+<path d="M600 224 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="244" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="286" r="19" fill="#2563eb"/>
+<text x="102" y="292" text-anchor="middle" font-size="17" fill="white">2</text>
+<text x="140" y="277" class="label">조직 main에 머지</text>
+<text x="140" y="305" class="detail">2026-07-21 이후 배포 대상 변경은 자동 배포로 연결됩니다.</text>
+<path d="M600 332 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="352" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="394" r="19" fill="#2563eb"/>
+<text x="102" y="400" text-anchor="middle" font-size="17" fill="white">3</text>
+<text x="140" y="385" class="label">CD 품질 검사와 프로덕션 빌드</text>
+<text x="140" y="413" class="detail">커밋 정보를 남긴 빌드 산출물을 생성합니다.</text>
+<path d="M600 440 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="460" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="502" r="19" fill="#2563eb"/>
+<text x="102" y="508" text-anchor="middle" font-size="17" fill="white">4</text>
+<text x="140" y="493" class="label">서버 준비 디렉터리로 전송</text>
+<text x="140" y="521" class="detail">서비스 파일 반영 전 스냅샷을 남깁니다.</text>
+<path d="M600 548 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="568" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="610" r="19" fill="#2563eb"/>
+<text x="102" y="616" text-anchor="middle" font-size="17" fill="white">5</text>
+<text x="140" y="601" class="label">서버 반영과 상태 확인</text>
+<text x="140" y="629" class="detail">의존성 → DB 백업·스키마 → PM2 reload → 헬스체크</text>
+<path d="M600 656 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="676" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="718" r="19" fill="#2563eb"/>
+<text x="102" y="724" text-anchor="middle" font-size="17" fill="white">6</text>
+<text x="140" y="709" class="label">결과 기록과 알림</text>
+<text x="140" y="737" class="detail">실패 시 복구 경로와 수동 개입 여부를 구분합니다.</text>
+<text x="64" y="868" class="detail">설명용 재구성 · 이후 추가된 스테이징 흐름은 포함하지 않았습니다.</text>
+</svg>

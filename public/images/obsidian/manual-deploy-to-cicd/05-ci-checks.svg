@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="682" viewBox="0 0 1200 682" role="img" aria-labelledby="title desc">
+<title id="title">같은 검사 기준을 PR에서 확인하기</title><desc id="desc">검사 항목보다 실행 조건과 결과를 먼저 정리했습니다.</desc>
+<rect width="100%" height="100%" fill="#f5f7fb"/>
+<style>text{font-family: "Apple SD Gothic Neo","Noto Sans KR",sans-serif;} .title{font-size:32px;font-weight:700;fill:#13213c} .sub{font-size:18px;fill:#526079} .label{font-size:23px;font-weight:700;fill:#13213c} .detail{font-size:17px;fill:#526079}</style>
+<text x="64" y="66" class="title">같은 검사 기준을 PR에서 확인하기</text>
+<text x="64" y="102" class="sub">검사 항목보다 실행 조건과 결과를 먼저 정리했습니다.</text>
+<rect x="64" y="136" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="178" r="19" fill="#2563eb"/>
+<text x="102" y="184" text-anchor="middle" font-size="17" fill="white">1</text>
+<text x="140" y="169" class="label">로컬 검사와 도구 훅</text>
+<text x="140" y="197" class="detail">lint·타입 검사를 지원하는 작업 경로에 연결합니다.</text>
+<path d="M600 224 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="244" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="286" r="19" fill="#2563eb"/>
+<text x="102" y="292" text-anchor="middle" font-size="17" fill="white">2</text>
+<text x="140" y="277" class="label">PR 코드 검사</text>
+<text x="140" y="305" class="detail">GitHub Actions에서 해당 코드의 품질 기준을 확인합니다.</text>
+<path d="M600 332 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="352" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="394" r="19" fill="#2563eb"/>
+<text x="102" y="400" text-anchor="middle" font-size="17" fill="white">3</text>
+<text x="140" y="385" class="label">테스트 실행 조건 분리</text>
+<text x="140" y="413" class="detail">순수 함수와 DB·Redis·서버 의존 테스트를 구분합니다.</text>
+<path d="M600 440 v12 m-5 -5 l5 5 5 -5" stroke="#8ba0c0" fill="none" stroke-width="2"/>
+<rect x="64" y="460" width="1072" height="84" rx="14" fill="white" stroke="#dce3ef"/>
+<circle cx="102" cy="502" r="19" fill="#2563eb"/>
+<text x="102" y="508" text-anchor="middle" font-size="17" fill="white">4</text>
+<text x="140" y="493" class="label">빌드·스모크 조건 확인 후 통합</text>
+<text x="140" y="521" class="detail">변경 파일에 따라 필요한 검사를 실행합니다.</text>
+<text x="64" y="652" class="detail">설명용 재구성 · 실제 Actions 실행 결과가 아닙니다.</text>
+</svg>
