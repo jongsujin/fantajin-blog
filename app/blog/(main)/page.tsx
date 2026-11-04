@@ -10,8 +10,20 @@ export const metadata: Metadata = createPageMetadata({
   noIndex: true,
 })
 
-export default async function Page() {
+export default async function Page({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[]; page?: string | string[] }>
+}) {
   const posts = await getAllPosts()
+  const { q, page } = await searchParams
 
-  return <BlogPage posts={posts} />
+  return (
+    <BlogPage
+      posts={posts}
+      query={Array.isArray(q) ? q[0] : q}
+      page={Array.isArray(page) ? page[0] : page}
+      basePath="/blog"
+    />
+  )
 }

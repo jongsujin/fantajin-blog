@@ -5,7 +5,7 @@ import Link from 'next/link'
 export default function CategoryBox() {
   return (
     <div className="mt-12">
-      <div className="grid grid-cols-3 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {categories.map((category) => (
           <Link key={category.id} href={category.href}>
             <div

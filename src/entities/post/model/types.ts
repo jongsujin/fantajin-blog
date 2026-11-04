@@ -56,6 +56,9 @@ export interface PaginationProps extends TagProps {
 
 export interface BlogPageProps {
   posts: Post[]
+  query?: string
+  page?: string
+  basePath?: string
 }
 
 export interface TagPageProps {

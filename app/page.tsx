@@ -10,11 +10,20 @@ export const metadata: Metadata = createPageMetadata({
   absoluteTitle: true,
 })
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[]; page?: string | string[] }>
+}) {
   const posts = await getAllPosts()
+  const { q, page } = await searchParams
   return (
     <div className="bg-backgroundColor min-h-screen">
-      <BlogPage posts={posts} />
+      <BlogPage
+        posts={posts}
+        query={Array.isArray(q) ? q[0] : q}
+        page={Array.isArray(page) ? page[0] : page}
+      />
     </div>
   )
 }
