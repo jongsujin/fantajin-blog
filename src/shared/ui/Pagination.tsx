@@ -35,8 +35,11 @@ export default function Pagination({
 
       {/* 페이지네이션 UI */}
       {totalPages > 1 && (
-        <div className="mt-8 flex justify-center">
-          <div className="flex items-center space-x-2">
+        <nav
+          aria-label="태그 글 목록 페이지"
+          className="mt-10 flex justify-center"
+        >
+          <div className="flex flex-wrap items-center gap-1">
             <button
               onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
               disabled={currentPage === 1}
@@ -62,6 +65,8 @@ export default function Pagination({
               (number) => (
                 <button
                   key={number}
+                  aria-label={`${number} 페이지`}
+                  aria-current={currentPage === number ? 'page' : undefined}
                   onClick={() => paginate(number)}
                   className={`pagination-number ${
                     currentPage === number ? 'pagination-active' : ''
@@ -97,7 +102,7 @@ export default function Pagination({
               </svg>
             </button>
           </div>
-        </div>
+        </nav>
       )}
     </>
   )
