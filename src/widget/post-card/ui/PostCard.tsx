@@ -36,7 +36,9 @@ export function PostCard({ post }: PostDetailProps) {
             {post.title}
           </h2>
 
-          <p className="mb-3 line-clamp-2 text-gray-300">{post.description}</p>
+          <p className="mb-3 line-clamp-2 text-gray-600 dark:text-gray-300">
+            {post.description}
+          </p>
 
           <div className="mb-3 flex flex-wrap gap-1.5">
             {post.tags.map((tag) => (

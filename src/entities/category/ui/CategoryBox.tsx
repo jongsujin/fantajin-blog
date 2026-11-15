@@ -13,7 +13,7 @@ export default function CategoryBox() {
             >
               <div className="mb-3">{category.icon}</div>
               <h3 className="mb-2 text-lg font-semibold">{category.title}</h3>
-              <p className="mb-4 text-sm text-gray-400">
+              <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
                 {category.description}
               </p>
               <div className="text-hoverColor mt-auto flex items-center text-sm transition-transform duration-300 group-hover:translate-x-1">
