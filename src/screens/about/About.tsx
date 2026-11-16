@@ -62,20 +62,6 @@ const CAREER_DATA: CareerItem[] = [
           'MongoDB',
         ],
       },
-      {
-        title: '광고 전환 측정 및 외부 웹 연동',
-        descriptions: [
-          '광고주 자사몰의 전환 측정을 위해 Toss Pixel을 연동하고, 구매·회원가입 등 주요 이벤트의 발생 조건과 데이터 흐름을 검증했습니다.',
-          '고객사의 웹사이트를 직접 수정하기 어려운 환경에서 AEO/GEO 개선 사항을 적용하기 위해 Cafe24 App과 Cloudflare Reverse Proxy·HTMLRewriter 기반 외부 사이트 연동 구조를 설계했습니다.',
-          '사이트별 HTML 구조와 기존 서비스에 영향을 주지 않아야 하는 제약을 고려하여, 원본 코드를 변경하지 않고 HTML을 동적으로 변환하는 방식의 PoC를 진행했습니다.',
-        ],
-        techStack: [
-          'Toss Pixel',
-          'Cafe24 App',
-          'Cloudflare Reverse Proxy',
-          'HTMLRewriter',
-        ],
-      },
     ],
   },
   {
