@@ -19,6 +19,11 @@ import React from 'react'
 
 const components = {
   img: MDXImage,
+  table: (props: ComponentProps<'table'>) => (
+    <div className="my-6 overflow-x-auto">
+      <table {...props} />
+    </div>
+  ),
   pre: CodeBlock as React.FC<React.HTMLAttributes<HTMLPreElement>>,
 }
 

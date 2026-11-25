@@ -43,6 +43,8 @@ body[data-theme='light'] {
   color: #171717;
   font-family: 'Pretendard Variable', sans-serif;
   --hljs-bg: #f6f8fa;
+  --table-border: #cbd5e1;
+  --table-header-bg: #f1f5f9;
 
   /* 페이지네이션 라이트 모드 스타일 */
   --pagination-border: #e5e7eb;
@@ -60,6 +62,8 @@ body[data-theme='light'] .tag-border {
 }
 
 body[data-theme='dark'] {
+  --table-border: #475569;
+  --table-header-bg: #1e293b;
   --tag-border: #374151; /* 어두운 회색 테두리 */
   background: #171717;
   color: #ededed;
@@ -231,8 +235,26 @@ body[data-theme='dark'] .tag-border {
 
 .prose table {
   width: 100%;
-  overflow-x: auto;
-  display: block;
+  border-collapse: collapse;
+}
+
+.prose :is(th, td) {
+  min-width: 7.5rem;
+  border: 1px solid var(--table-border);
+  padding: 0.625rem 0.875rem;
+  vertical-align: top;
+  line-height: 1.6;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.prose th {
+  background-color: var(--table-header-bg);
+  font-weight: 700;
+}
+
+.prose :is(th, td):not([align]) {
+  text-align: start;
 }
 
 /* 인용문 스타일링 */
@@ -309,7 +331,7 @@ input[type='checkbox']:checked::before {
 }
 
 /* 강조(bold) 텍스트 스타일링 */
-.prose strong {
+.prose strong:where(:not(th strong)) {
   font-weight: 700;
   color: #0284c7; /* 라이트 블루 색상 */
   background: linear-gradient(
@@ -321,7 +343,7 @@ input[type='checkbox']:checked::before {
 }
 
 /* 다크 모드에서 강조 텍스트 스타일링 */
-body[data-theme='dark'] .prose strong {
+body[data-theme='dark'] .prose strong:where(:not(th strong)) {
   color: #38bdf8; /* 다크 모드에서는 더 밝은 블루 */
   background: linear-gradient(
     to bottom,
