@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="620" height="969" viewBox="0 0 620 969" role="img" aria-labelledby="title description">
+<title id="title">Sentry 알림에서 운영 배포까지</title>
+<desc id="description">Sentry 알림에 🔍를 달면 3~4분 뒤 같은 Slack 스레드에 원인 분석이 올라옵니다. 코드 결함이고 확신이 보통 이상이면 15~20분 뒤 수정 PR 링크가 달립니다. 사람이 staging에 병합하고 배포 후 테스트를 통과하면 staging-verified 라벨이 붙습니다. 사람이 main에 병합하면 운영에 배포됩니다.</desc>
+<style>text{font-family:"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif}.heading{font-size:34px;font-weight:700;fill:#f8f7ef}.label{font-size:19px;font-weight:700}.step{font-size:28px;font-weight:700;fill:#142f39}.detail{font-size:21px;fill:#354e55}</style>
+<rect width="620" height="969" rx="20" fill="#f6f5ef"/>
+<path d="M20 0h580q20 0 20 20v76H0V20Q0 0 20 0" fill="#16383f"/>
+<text x="30" y="61" class="heading">Sentry 알림에서 운영 배포까지</text>
+<g transform="translate(0 115)">
+<rect x="26" width="568" height="123" rx="14" fill="#fff" stroke="#cdd8d3"/>
+<circle cx="55" cy="29" r="15" fill="#315e79"/>
+<text x="55" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="white">1</text>
+<text x="82" y="36" class="label" fill="#315e79">Slack</text>
+<text x="43" y="74" class="step">Sentry 알림에 🔍 반응 달기</text>
+<text x="43" y="105" class="detail">반응을 단 사람에게만 에이전트 실행을 알립니다.</text>
+</g>
+<path d="M55 239v19m-6 -6 6 6 6 -6" fill="none" stroke="#647f7b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(0 262)">
+<rect x="26" width="568" height="154" rx="14" fill="#fff" stroke="#cdd8d3"/>
+<circle cx="55" cy="29" r="15" fill="#146759"/>
+<text x="55" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="white">2</text>
+<text x="82" y="36" class="label" fill="#146759">분석 에이전트 · 3~4분 뒤</text>
+<text x="43" y="74" class="step">같은 스레드에 분석 결과 도착</text>
+<text x="43" y="105" class="detail">분류, 발생 시점, 영향, 원인 파일과 줄,</text>
+<text x="43" y="132" class="detail">추천 조치를 여섯 줄로 정리합니다.</text>
+</g>
+<path d="M55 417v19m-6 -6 6 6 6 -6" fill="none" stroke="#647f7b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(0 440)">
+<rect x="26" width="568" height="154" rx="14" fill="#fff" stroke="#cdd8d3"/>
+<circle cx="55" cy="29" r="15" fill="#146759"/>
+<text x="55" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="white">3</text>
+<text x="82" y="36" class="label" fill="#146759">수정 에이전트 · 15~20분 뒤</text>
+<text x="43" y="74" class="step">조건을 충족하면 수정 PR 생성</text>
+<text x="43" y="105" class="detail">코드 결함이고 확신이 보통 이상이면 수정합니다.</text>
+<text x="43" y="132" class="detail">staging 대상 draft PR 링크를 같은 스레드에 답니다.</text>
+</g>
+<path d="M55 595v19m-6 -6 6 6 6 -6" fill="none" stroke="#647f7b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(0 618)">
+<rect x="26" width="568" height="154" rx="14" fill="#fff" stroke="#cdd8d3"/>
+<circle cx="55" cy="29" r="15" fill="#804f27"/>
+<text x="55" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="white">4</text>
+<text x="82" y="36" class="label" fill="#804f27">사람 → 자동 검증</text>
+<text x="43" y="74" class="step">PR 리뷰 후 staging에 병합</text>
+<text x="43" y="105" class="detail">스테이징 배포가 끝나면 버그 재현 테스트와</text>
+<text x="43" y="132" class="detail">스모크 테스트를 자동으로 실행합니다.</text>
+</g>
+<path d="M55 773v19m-6 -6 6 6 6 -6" fill="none" stroke="#647f7b" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+<g transform="translate(0 796)">
+<rect x="26" width="568" height="154" rx="14" fill="#fff" stroke="#cdd8d3"/>
+<circle cx="55" cy="29" r="15" fill="#804f27"/>
+<text x="55" y="36" font-size="20" font-weight="700" text-anchor="middle" fill="white">5</text>
+<text x="82" y="36" class="label" fill="#804f27">검증 통과 → 사람</text>
+<text x="43" y="74" class="step">main에 병합하면 운영 배포</text>
+<text x="43" y="105" class="detail">테스트를 통과한 PR에 staging-verified 라벨이 붙습니다.</text>
+<text x="43" y="132" class="detail">확인한 사람이 main에 병합합니다.</text>
+</g>
+</svg>
